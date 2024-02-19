@@ -1,0 +1,19 @@
+<!-- app/views/statuses/show.html.erb -->
+
+<h1><%= @status.date %></h1>
+
+<p>GitHub PR Link: <%= @status.github_pr_link %></p>
+<p>Remarks: <%= @status.remarks %></p>
+
+<h2>Tasks</h2>
+<% @status.tasks.each do |task| %>
+  <div class="task">
+    <!-- ... other task details ... -->
+    <% if task.screenshot.attached? %>
+      <%= image_tag task.screenshot %>
+    <% else %>
+      <p>No screenshot available</p>
+    <% end %>
+    <!-- ... other task details ... -->
+  </div>
+<% end %>

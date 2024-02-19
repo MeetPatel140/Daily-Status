@@ -1,0 +1,36 @@
+<%= form_with(model: @status, local: true) do |form| %>
+  <% if @status.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+
+    <ul>
+      <% @employee.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+  <!-- ... other fields ... -->
+
+  <div class="field">
+    <%= form.label :tasks, class: 'font-weight-bold' %>
+    <%= form.fields_for :tasks do |task_form| %>
+      <div class="nested-fields">
+        <!-- ... other task fields ... -->
+
+        <div class="field">
+          <%= task_form.label :screenshot %>
+          <%= task_form.file_field :screenshot %>
+        </div>
+
+        <!-- ... other task fields ... -->
+      </div>
+    <% end %>
+
+    <%= link_to 'Add Task', '#', class: 'add-task' %>
+  </div>
+
+  <!-- ... other fields ... -->
+
+<% end %>
