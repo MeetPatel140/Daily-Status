@@ -1,6 +1,7 @@
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: [:show, :edit, :update, :destroy]
-  # before_action :require_admin, only: [:index, :destroy]
+  before_action :set_employee, only: [:show]
+  before_action :require_admin, only: [:index, :destroy]
+  skip_before_action :authenticate_employee!
 
   # GET  /employees
   def index
@@ -59,11 +60,11 @@ class EmployeesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def set_employee
-    @employee = Employee.find(params[:id])
+    @employee = current_employee
   end
 
-  # Check if user is admin
-  # def require_admin
-  #   redirect_to root_path unless current_employee && current_employee.admin?
-  # end
+  # Check if the current employee is an admin
+  def require_admin
+    redirect_to root_path unless current_employee && current_employee.admin?
+  end
 end

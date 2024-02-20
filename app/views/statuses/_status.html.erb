@@ -1,0 +1,19 @@
+<div>
+    <strong>Check In:</strong> <%= status.check_in %><br>
+    <strong>Check Out:</strong> <%= status.check_out %><br>
+    <strong>Date:</strong> <%= status.date %><br>
+    <strong>Daily Report:</strong> <%= status.daily_report %><br>
+    <strong>Github PR Link:</strong> <%= status.github_pr_link %><br>
+    <strong>Remarks:</strong> <%= status.remarks %><br>
+
+    <% if status.tasks.any? %>
+      <h4>Tasks:</h4>
+      <ul>
+        <% status.tasks.each do |task| %>
+          <li><%= task.title %>: <%= task.description %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+  </div>
+  

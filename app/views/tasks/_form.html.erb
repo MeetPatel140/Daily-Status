@@ -1,0 +1,35 @@
+<%= form_with(model: [@status, @task], local: true) do |form| %>
+  <div class="nested-fields">
+    <div class="field">
+      <%= form.label :title %>
+      <%= form.text_field :title %>
+    </div>
+
+    <div class="field">
+      <%= form.label :description %>
+      <%= form.text_area :description %>
+    </div>
+
+    <div class="field">
+      <%= form.label :start_time %>
+      <%= form.datetime_local_field :start_time %>
+    </div>
+
+    <div class="field">
+      <%= form.label :end_time %>
+      <%= form.datetime_local_field :end_time %>
+    </div>
+
+    <div class="field">
+      <%= form.label :screenshot %>
+      <%= form.file_field :screenshot %>
+    </div>
+
+    <!-- Add any additional task fields here -->
+    <%= form.submit 'Save Task', class: 'btn btn-primary' %>
+
+    <%= link_to 'Remove Task', '#', class: 'remove-task' %>
+  </div>
+<% end %>
+
+<%= link_to 'Add Task', '#', class: 'add-task' %>
