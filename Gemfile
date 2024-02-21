@@ -2,8 +2,9 @@ source "https://rubygems.org"
 
 ruby "3.3.0"
 gem "bcrypt"
-gem 'devise'
-gem 'cancancan'
+gem "sassc"
+gem "devise"
+gem "cancancan"
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
