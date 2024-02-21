@@ -1,0 +1,9 @@
+<h1>All Tasks</h1>
+
+<% @tasks.each do |task| %>
+  <div class="task">
+    <!-- ... display task details ... -->
+  </div>
+<% end %>
+
+<%= link_to 'New Task', new_status_task_path(@status) %>

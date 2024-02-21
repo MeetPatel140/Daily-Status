@@ -1,19 +1,29 @@
-<!-- app/views/statuses/show.html.erb -->
-
-<h1><%= @status.date %></h1>
-
-<p>GitHub PR Link: <%= @status.github_pr_link %></p>
-<p>Remarks: <%= @status.remarks %></p>
+  <p>Date: <%= @status.date %></p>
+  <p>Check In: <%= @status.check_in %></p>
+  <p>Check Out: <%= @status.check_out %></p>
+  <p>Daily Report: <%= @status.daily_report %></p>
+  <p>Github PR Link: <%= @status.github_pr_link %></p>
+  <p>Remarks: <%= @status.remarks %></p>
 
 <h2>Tasks</h2>
 <% @status.tasks.each do |task| %>
   <div class="task">
     <!-- ... other task details ... -->
+
+
+    <%= link_to task.title, edit_task_path(task) %>
+    <p>Start Time: <%= task.start_time %></p>
+    <p>End Time: <%= task.end_time %></p>
+    <p>Description: <%= task.description %></p>
+
     <% if task.screenshot.attached? %>
       <%= image_tag task.screenshot %>
     <% else %>
       <p>No screenshot available</p>
     <% end %>
+
     <!-- ... other task details ... -->
   </div>
 <% end %>
+
+<%= link_to 'Add Task', new_task_path(status_id: @status.id), class: 'btn btn-secondary' %>

@@ -1,36 +1,36 @@
-<%= form_with(model: @status, local: true) do |form| %>
-  <% if @status.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+<%= form_with(model: [@employee, @status], local: true, id: 'status-form') do |form| %>
+<% if @status.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@status.errors.count, "error") %> prohibited this status from being saved:</h2>
 
-    <ul>
-      <% @employee.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
-  <% end %>
-
-  <!-- ... other fields ... -->
-
-  <div class="field">
-    <%= form.label :tasks, class: 'font-weight-bold' %>
-    <%= form.fields_for :tasks do |task_form| %>
-      <div class="nested-fields">
-        <!-- ... other task fields ... -->
-
-        <div class="field">
-          <%= task_form.label :screenshot %>
-          <%= task_form.file_field :screenshot %>
-        </div>
-
-        <!-- ... other task fields ... -->
-      </div>
+  <ul>
+    <% @status.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
     <% end %>
+  </ul>
+</div>
+<% end %>
 
-    <%= link_to 'Add Task', '#', class: 'add-task' %>
-  </div>
+<%= form.label :check_in %>
+<%= form.datetime_local_field :check_in, class: 'form-control' %>
 
-  <!-- ... other fields ... -->
+<%= form.label :check_out %>
+<%= form.datetime_local_field :check_out, class: 'form-control' %>
+
+<%= form.label :date %>
+<%= form.date_field :date, class: 'form-control' %>
+
+<%= form.label :daily_report %>
+<%= form.text_area :daily_report, class: 'form-control' %>
+
+<%= form.label :github_pr_link %>
+<%= form.text_field :github_pr_link, class: 'form-control' %>
+
+<%= form.label :remarks %>
+<%= form.text_area :remarks, class: 'form-control' %>
+
+<%= form.submit 'Save Status', data: { turbo_stream: true }, class: 'btn btn-primary' %>
+
+<%= link_to 'Add Task', new_task_path, class: 'btn-btn-secondary' %>
 
 <% end %>

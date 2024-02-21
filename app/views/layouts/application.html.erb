@@ -8,9 +8,15 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
   </head>
 
   <body>
     <%= yield %>
+    <% if current_employee %>
+      <%= link_to 'Logout', logout_path, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %>
+    <% else %>
+      <%= link_to 'Login', root_path %>
+    <% end %>
   </body>
 </html>
