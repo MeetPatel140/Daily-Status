@@ -1,7 +1,7 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show]
-  before_action :require_admin, only: [:index, :destroy]
-  skip_before_action :authenticate_employee!
+  # before_action :require_admin, only: [:index, :destroy]
+  before_action :authenticate_employee!
 
   # GET  /employees
   def index
