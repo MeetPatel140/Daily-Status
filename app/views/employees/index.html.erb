@@ -1,10 +1,33 @@
+<% if current_employee.admin? %>
+
 <% if current_employee %>
 
-    <%= current_employee.role %>
+    <p>Employee ID: <%= current_employee.id %></p>
+    <p>Employee Name: <%= current_employee.name %></p>
+    <p>Employee Email: <%= current_employee.email %></p>
+    <p>Employee Role: <%= current_employee.role %></p>
+    
 
 <% else %>
 
     <p> Aa Work nai kartu !</p>
+
+<% end %>
+
+    <% if current_employee.admin? %>
+
+        <p> Admin hai !</p>
+
+    <% else %>
+
+        <p> Admin nai hai !</p>
+
+    <% end %>
+
+
+<% else %>
+
+    <p> Aa Work kare che !</p>
 
 <% end %>
 

@@ -15,8 +15,4 @@ class Employee < ApplicationRecord
     role == "admin"
   end
 
-  def employee?
-    role == "employee"
-  end
-
 end
