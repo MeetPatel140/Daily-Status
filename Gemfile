@@ -4,6 +4,8 @@ ruby "3.3.0"
 gem "bcrypt"
 gem "sassc"
 gem "devise"
+gem "pry-rails"
+gem "cancancan"
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
