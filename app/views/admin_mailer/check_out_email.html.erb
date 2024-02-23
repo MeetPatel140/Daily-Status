@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Check-Out Notification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F4F4F4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    p {
+      margin-bottom: 10px;
+      color: #666;
+    }
+    .info-box {
+      background-color: #F9F9F9;
+      padding: 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Employee Check-Out Notification !!</h1>
+    <p>Hello Admin,</p>
+    <div class="info-box">
+      <% indian_time = Time.current.in_time_zone('Asia/Kolkata') %>
+      <p><b><u><%= @user.name %></u></b> has Checked Out at <b><u><%= indian_time.strftime('%d-%m-%Y,  %I:%M:%S %p') %></u></b></p>
+    </div>
+  </div>
+</body>
+</html>

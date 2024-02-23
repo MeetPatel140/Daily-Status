@@ -1,10 +1,8 @@
 class Status < ApplicationRecord
-  belongs_to :employee
+  belongs_to :user
   has_many :tasks, dependent: :destroy
   has_one_attached :screenshot
 
-  validates :check_in, presence: true
-  validates :check_out, presence: true
   validates :date, presence: true
   validates :daily_report, presence: true
   validates :github_pr_link, presence: true
