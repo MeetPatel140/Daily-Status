@@ -43,12 +43,8 @@
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
+    
     <%= yield %>
-    <% if current_employee %>
-      <%= link_to 'Logout', logout_path, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %>
-    <% else %>
-      <%= link_to 'Login', root_path %>
-    <% end %>
 
     <!-- Custom Scripts for App's Design -->
     <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/js/vendor.bundle.base.js"></script>
@@ -64,6 +60,5 @@
     <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/todolist.js"></script>
     <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/dashboard.js"></script>
     
-
   </body>
 </html>

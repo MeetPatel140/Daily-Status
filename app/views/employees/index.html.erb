@@ -1,29 +1,34 @@
-<h1>Employees</h1>
+<% if current_employee.admin? %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Admin</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+<% if current_employee %>
 
-  <tbody>
-    <% @employees.each do |employee| %>
-      <tr>
-        <td><%= "#{employee.first_name} #{employee.last_name}" %></td>
-        <td><%= employee.email %></td>
-        <td><%= employee.admin? ? 'Yes' : 'No' %></td>
-        <td>
-          <%= link_to 'Show', employee %>
-          <%= link_to 'Edit', edit_employee_path(employee) %>
-          <%= link_to 'Delete', employee, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } %>
-        </td>
-      </tr>
+    <p>Employee ID: <%= current_employee.id %></p>
+    <p>Employee Name: <%= current_employee.name %></p>
+    <p>Employee Email: <%= current_employee.email %></p>
+    <p>Employee Role: <%= current_employee.role %></p>
+    
+
+<% else %>
+
+    <p> Aa Work nai kartu !</p>
+
+<% end %>
+
+    <% if current_employee.admin? %>
+
+        <p> Admin hai !</p>
+
+    <% else %>
+
+        <p> Admin nai hai !</p>
+
     <% end %>
-  </tbody>
-</table>
 
-<%= link_to 'New Employee', new_employee_path %>
+
+<% else %>
+
+    <p> Aa Work kare che !</p>
+
+<% end %>
+
+<%= link_to 'Logout', destroy_employee_session_path, data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to Logout?' } %>

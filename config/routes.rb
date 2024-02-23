@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   devise_for :employees
-  root to: 'sessions#new'
+  root to: 'employees#index'
 
-  get '/login', to: 'sessions#new', as: :login
-  post '/login', to: 'sessions#create'
-  delete '/logout', to: 'sessions#destroy', as: :logout
-  get '/signup', to: 'employees#new', as: 'signup'
+  # get '/login', to: 'sessions#new', as: :login
+  # post '/login', to: 'sessions#create'
+  # delete '/logout', to: 'sessions#destroy', as: :logout
+  # get '/signup', to: 'employees#new', as: 'signup'
 
   resources :employees
   resources :statuses

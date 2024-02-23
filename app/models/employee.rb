@@ -4,7 +4,15 @@ class Employee < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :statuses
-  has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+
+  enum role: [:employee, :admin]
+
+  def set_default_role
+    self.role ||= :employee
+  end
+
+  def admin?
+    role == "admin"
+  end
 
 end

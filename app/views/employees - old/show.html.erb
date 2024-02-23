@@ -1,0 +1,6 @@
+<h1><%= "#{@employee.first_name} #{@employee.last_name}" %></h1>
+
+<p>Email: <%= @employee.email %></p>
+<p>Admin: <%= @employee.admin? ? 'Yes' : 'No' %></p>
+
+<%= link_to 'Back', employees_path %>
