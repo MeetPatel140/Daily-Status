@@ -11,17 +11,23 @@
 </div>
 <% end %>
 
-<%= form.label :date %>
-<%= form.date_field :date, class: 'form-control' %>
+<% if !current_user.admin? %>
 
-<%= form.label :daily_report %>
-<%= form.text_area :daily_report, class: 'form-control' %>
+  <%= form.label :date %>
+  <%= form.date_field :date, class: 'form-control' %>
 
-<%= form.label :github_pr_link %>
-<%= form.text_field :github_pr_link, class: 'form-control' %>
+  <%= form.label :daily_report %>
+  <%= form.text_area :daily_report, class: 'form-control' %>
 
-<%= form.label :remarks %>
-<%= form.text_area :remarks, class: 'form-control' %>
+  <%= form.label :github_pr_link %>
+  <%= form.text_field :github_pr_link, class: 'form-control' %>
+
+<% else %>
+
+  <%= form.label :remarks %>
+  <%= form.text_area :remarks, class: 'form-control' %>
+  
+<% end %>
 
 <%= form.submit 'Save Status', data: { turbo_stream: true }, class: 'btn btn-primary' %>
 

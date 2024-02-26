@@ -40,5 +40,5 @@ db/schema.txt
 log/development.log
 tmp/pids/server.pid
 tmp/cache/bootsnap/load-path-cache
-test/fixtures/employees.yml
+test/fixtures/users.yml
 storage/development.sqlite3
