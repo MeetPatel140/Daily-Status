@@ -33,3 +33,12 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+Gemfile.lock
+config/initializers/devise.rb
+config/locales/devise.en.yml
+db/schema.txt
+log/development.log
+tmp/pids/server.pid
+tmp/cache/bootsnap/load-path-cache
+test/fixtures/employees.yml
+storage/development.sqlite3
