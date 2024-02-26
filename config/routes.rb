@@ -1,28 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :employees
-  root to: 'employees#index'
+  devise_for :users
 
-  # get '/login', to: 'sessions#new', as: :login
-  # post '/login', to: 'sessions#create'
-  # delete '/logout', to: 'sessions#destroy', as: :logout
-  # get '/signup', to: 'employees#new', as: 'signup'
+  root to: "users#dashboard"
 
-  resources :employees
+  resources :users
   resources :statuses
   resources :tasks
-
-  resources :employees, only: [:new, :create] do
-    resources :statuses
-  end
 
   resources :statuses do
     resources :tasks
   end
 
-  namespace :admin do
-    get 'remarks', to: 'admins#remarks'
-    get 'remarks/:id/edit', to: 'admins#edit_remark', as: 'edit_remark'
-    patch 'remarks/:id', to: 'admins#update_remark'
-    delete 'remarks/:id', to: 'admins#destroy_remark'
-  end
+  post '/checkouts', to: 'checkouts#process_check_outs'
 end

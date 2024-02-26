@@ -1,0 +1,11 @@
+this is dashbaord for both employees & admin
+
+<% if current_user %>
+    <% if current_user.admin? %>
+        <h1>Admin Dashboard</h1>
+    <% else %>
+        <h1>Employee Dashboard</h1>
+    <% end %>
+<% end %>
+<%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "btn btn-primary" %>
+<%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-danger" %>

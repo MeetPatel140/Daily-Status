@@ -1,9 +1,10 @@
 class StatusesController < ApplicationController
   before_action :set_status, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_employee!
+  before_action :authenticate_user!
 
   # GET /statuses
   def index
+    @user = current_user
     @statuses = Status.all
   end
 
@@ -14,8 +15,7 @@ class StatusesController < ApplicationController
 
   # GET /statuses/new
   def new
-    @status = Status.new
-    @employee = current_employee
+    @status = current_user.statuses.build
   end
 
   # GET /statuses/1/edit
@@ -26,7 +26,7 @@ class StatusesController < ApplicationController
 
   # POST /statuses
   def create
-    @employee = current_employee
+    @user = current_user
     @status = @employee.statuses.create(status_params)
 
     respond_to do |format|
@@ -58,19 +58,13 @@ class StatusesController < ApplicationController
 
   private
 
-  def current_employee
-    @current_employee ||= Employee.find_by(id: session[:employee_id])
-  end
-
-
   # Use callbacks to share common setup or constraints between actions.
   def set_status
     @status = Status.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
-  # app/controllers/statuses_controller.rb
   def status_params
-    params.require(:status).permit(:check_in, :check_out, :daily_report, :github_pr_link, :date, :remarks, :employee_id, tasks_attributes: [:id, :title, :description, :start_time, :end_time, :screenshot, :_destroy])
+    params.require(:status).permit(:daily_report, :github_pr_link, :date, :remarks, :user_id, tasks_attributes: [:id, :title, :description, :start_time, :end_time, :screenshot, :_destroy])
   end
 end

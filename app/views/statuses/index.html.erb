@@ -4,8 +4,6 @@
   <thead>
     <tr>
       <th>Date</th>
-      <th>Check In</th>
-      <th>Check Out</th>
       <th>Daily Report</th>
       <th>GitHub PR Link</th>
       <th>Actions</th>
@@ -15,8 +13,6 @@
     <% @statuses.each do |status| %>
       <tr>
         <td><%= status.date %></td>
-        <td><%= status.check_in %></td>
-        <td><%= status.check_out %></td>
         <td><%= status.daily_report %></td>
         <td><%= status.github_pr_link %></td>
         <td>
