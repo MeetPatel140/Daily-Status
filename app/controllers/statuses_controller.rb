@@ -1,11 +1,16 @@
 class StatusesController < ApplicationController
   before_action :set_status, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :current_user_admin?
 
   # GET /statuses
   def index
     @user = current_user
-    @statuses = Status.all
+    if current_user_admin?
+      @statuses = Status.all
+    else
+      @statuses = current_user.statuses
+    end
   end
 
   # GET /statuses/1
@@ -15,37 +20,39 @@ class StatusesController < ApplicationController
 
   # GET /statuses/new
   def new
-    @status = current_user.statuses.build
+    @status = Status.new
   end
 
   # GET /statuses/1/edit
   def edit
-    @status = Status.find(params[:id])
-    @task = Task.new
   end
 
   # POST /statuses
   def create
-    @user = current_user
-    @status = @employee.statuses.create(status_params)
-
-    respond_to do |format|
-      if @status.persisted?
-        flash[:notice] = 'Status was successfully created.'
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@status, partial: 'statuses/status', locals: { status: @status }) }
-      else
-        format.html { render :new }
-      end
+    @status = Status.new(status_params)
+    @status.user = current_user
+    if @status.save
+      flash[:notice] = 'Status was successfully added.'
+      redirect_to status_path(@status)
+    else
+      render 'new', status: 422
     end
   end
 
   # PATCH/PUT /statuses/1
   def update
-    if @status.update(status_params)
-      flash[:notice] = 'Status was successfully updated.'
-      redirect_to @status
+    if current_user_admin?
+      if @status.update(status_params)
+        flash[:notice] = 'Status was successfully updated.'
+        redirect_to statuses_path
+      else
+        flash[:alert] = 'Failed to update status.'
+        flash[:alert] = @status.errors.full_messages.join(', ')
+        render :edit, status: 422
+      end
     else
-      render :edit
+      flash[:alert] = 'You do not have permission to update this status.'
+      render :edit, status: 422
     end
   end
 

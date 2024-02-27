@@ -4,7 +4,7 @@ class TasksController < ApplicationController
 
   # GET /tasks
   def index
-    @tasks = Task.all
+    redirect_to statuses_path
   end
 
   # GET /tasks/1
@@ -27,9 +27,9 @@ class TasksController < ApplicationController
     @task = @status.tasks.build(task_params)
     if @task.save
       flash[:notice] = 'Task was successfully created.'
-      redirect_to @task
+      redirect_to status_path(@status)
     else
-      render :new
+      render 'new', status: 422
     end
   end
 

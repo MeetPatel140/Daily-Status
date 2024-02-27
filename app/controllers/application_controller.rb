@@ -2,14 +2,14 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
-  # helper_method :current_employee
+  # helper_method :current_user
 
-  # def current_employee
-  #   @current_employee ||= Employee.find_by(id: session[:employee_id]) if session[:employee_id]
+  # def current_user
+  #   @current_user ||= user.find_by(id: session[:user_id]) if session[:user_id]
   # end
 
-  # def authenticate_employee!
-  #   redirect_to login_path unless current_employee || signup_page?
+  # def authenticate_user!
+  #   redirect_to login_path unless current_user || signup_page?
   # end
 
   # def signup_page?
