@@ -1,11 +1,12 @@
 class StatusesController < ApplicationController
   before_action :set_status, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :current_user_admin?
 
   # GET /statuses
   def index
     @user = current_user
-    if current_user.admin?
+    if current_user_admin?
       @statuses = Status.all
     else
       @statuses = current_user.statuses
@@ -40,7 +41,7 @@ class StatusesController < ApplicationController
 
   # PATCH/PUT /statuses/1
   def update
-    if current_user.admin?
+    if current_user_admin?
       if @status.update(status_params)
         flash[:notice] = 'Status was successfully updated.'
         redirect_to statuses_path
@@ -49,7 +50,7 @@ class StatusesController < ApplicationController
         flash[:alert] = @status.errors.full_messages.join(', ')
         render :edit, status: 422
       end
-    elsif !current_user.admin?
+    else
       flash[:alert] = 'You do not have permission to update this status.'
       render :edit, status: 422
     end

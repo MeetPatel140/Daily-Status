@@ -20,7 +20,7 @@
         <td>
           <% if status.remarks.present? %>
               <%= status.remarks %>
-            <% if current_user.admin? %>
+            <% if current_user_admin? %>
               <%= link_to "Add Remarks", edit_status_path(status) %>
             <% end %>
           <% else %>
