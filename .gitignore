@@ -42,3 +42,5 @@ tmp/pids/server.pid
 tmp/cache/bootsnap/load-path-cache
 test/fixtures/users.yml
 storage/development.sqlite3
+log/development.log
+storage/development.sqlite3

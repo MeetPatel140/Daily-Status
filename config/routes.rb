@@ -11,5 +11,6 @@ Rails.application.routes.draw do
     resources :tasks
   end
 
-  post '/checkouts', to: 'checkouts#process_check_outs'
+  post '/checkouts', to: 'checkouts#process_checkouts'
+  post '/new_status', to: 'new_status#send_email'
 end
