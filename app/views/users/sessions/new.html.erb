@@ -1,26 +1,53 @@
-<h2>Log in</h2>
+<style>
+    
+</style>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <!-- Main Content -->
+    <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <div style="display: flex; justify-self: center; align-content: center; text-align:center; align-items: center;">
+                <i class="fas fa-laptop-code" style="color: blue; font-size: 1.8rem; margin-left: 20px;"></i>
+                <div class="sidebar-brand-text mx-2" style="color: blue; font-size: 1.7em; width:100%; font-weight: 800;">Daily Status<sup></sup></div>
+            </div>
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Main Login -->
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-heading"><i class="fa fa-lock"></i> LOGIN</div>
+                    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                        <div class="form-group">
+                            <%= f.label :email, for: "email" %>
+                            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Enter your email here..", required: true, class: "form-control", id: "email" %>
+                        </div>
+                        <div class="form-group">
+                            <%= f.label :password, for: "password" %>
+                            <%= f.password_field :password, autocomplete: "password", placeholder: "Enter your password here..", required: true, class: "form-control", id: "passwprd" %>
+                        </div>
+                        <%= f.button class: "btn btn-primary btn-block", type: "submit" do %>
+                            <i class="fa fa-sign-in"></i> Login
+                        <% end %>
+                    <% end %>
+                    <div class="mt-3 text-center">
+                        <a href="#">Don't have an account? Register here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-  <% end %>
+    <!-- End of Content Wrapper -->
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
+</div>
+<!-- End of Page Wrapper -->
 
-<%= render "users/shared/links" %>

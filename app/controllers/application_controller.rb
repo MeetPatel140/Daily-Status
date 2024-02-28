@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     @current_user = resource
+    binding.pry
     AdminMailer.check_in_email(resource).deliver_now
     root_path
   end

@@ -44,3 +44,5 @@ test/fixtures/users.yml
 storage/development.sqlite3
 log/development.log
 storage/development.sqlite3
+node_modules
+tmp
