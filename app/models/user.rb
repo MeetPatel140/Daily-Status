@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :statuses
+  has_many :tasks, through: :statuses
 
   def admin?
     role == "admin"
