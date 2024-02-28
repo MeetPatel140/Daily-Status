@@ -51,7 +51,7 @@
         <!-- Nav Item - Logout -->
         <li class="nav-item">
             <a class="nav-link" href="approve_account_requests.php">
-                <i class="fas fa-fw fa-sign-out"></i>
+                <i class="fa-solid fa-fw fa-sign-out"></i>
                 <span>Logout</span>
             </a>
         </li>
@@ -64,13 +64,13 @@
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
 
-        <!-- <script>
-            $(document).ready(function () {
-                $("#sidebarToggle").on("click", function () {
+    <script>
+        $(document).ready(function () {
+            $("#sidebarToggle").on("click", function () {
                 $("#accordionSidebar").toggleClass("toggled");
-                });
             });
-        </script>   -->
+        });
+    </script>
 
     </ul>
     <!-- End of Sidebar -->
@@ -169,11 +169,6 @@
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Account Approval Requests</div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                            <?php
-                                            $reqSQL = mysqli_query($conn, "SELECT * from customers WHERE account_mode = 'Inactive'");
-                                            $numRows = mysqli_num_rows($reqSQL);
-                                            echo $numRows;
-                                            ?>
                                         </div>
                                     </div>
                                     <div class="col-auto">

@@ -1,0 +1,34 @@
+<!-- app/views/shared/_notification.html.erb -->
+<% if notice %>
+  <script>
+    Toastify({
+      text: "<%= notice %>",
+      duration: 5000,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+      close: true,
+      backgroundColor: "linear-gradient(to right, #007bff, #00b0ff)",
+      callback: function() {
+        console.log("Notification closed");
+      },
+    }).showToast();
+  </script>
+<% end %>
+
+<% if alert %>
+  <script>
+    Toastify({
+      text: "<%= alert %>",
+      duration: 5000,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+      close: true,
+      backgroundColor: "linear-gradient(to right, #ff0000, #ff8080)",
+      callback: function() {
+        console.log("Notification closed");
+      },
+    }).showToast();
+  </script>
+<% end %>
