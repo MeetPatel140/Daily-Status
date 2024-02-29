@@ -1,34 +1,70 @@
-<h2>Sign up</h2>
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+  
+      <!-- Main Content -->
+      <div id="content">
+  
+          <!-- Topbar -->
+          <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+              <div style="display: flex; justify-self: center; align-content: center; text-align:center; align-items: center;">
+                  <i class="fas fa-laptop-code" style="color: blue; font-size: 1.8rem; margin-left: 20px;"></i>
+                  <div class="sidebar-brand-text mx-2" style="color: blue; font-size: 1.7em; width:100%; font-weight: 800;">Daily Status<sup></sup></div>
+              </div>
+          </nav>
+          <!-- End of Topbar -->
+  
+          <!-- Main Login -->
+          <div class="container">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="form-heading"><i class="fa fa-user-plus"></i> REGISTER</div>
+                      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+                      <%= render "users/shared/error_messages", resource: resource %>
+                          <div class="form-group">
+                            <%= f.label :name, for: "name" %>
+                            <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "Enter your name here..", required: true, class: "form-control", id: "name" %>
+                          </div>
+                          <div class="form-group">
+                            <%= f.label :email, for: "email" %>
+                            <%= f.email_field :email, autocomplete: "email", placeholder: "Enter your email here..", required: true, class: "form-control", id: "email" %>
+                          </div>
+                          
+                          <div class="form-group">
+                            <%= f.label :password, "Password" %>
+                            <% if @minimum_password_length %>
+                              <em>(<%= @minimum_password_length %> characters minimum)</em>
+                            <% end %><br />
+                            <%= f.password_field :password, autocomplete: "new-password", required: true, class: "form-control", id: "password", placeholder: "Enter your password here.." %>
+                          </div>
+                          
+                        
+                          <div class="form-group">
+                            <%= f.label :password_confirmation, for: "password_confirmation" %><br />
+                            <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, class: "form-control", id: "password_confirmation", placeholder: "Confirm your password here.." %>
+                          </div>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+
+                          <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
+                              <i class="fa-solid fa-fw fa-user-plus loading-text"></i>
+                              <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Registering...</span>
+                              <span class="loading-text">Register</span>
+                          <% end %>
+                      <% end %>
+                      <!-- <hr class="divider my-3 d-none d-md-block"> -->
+                      <br>
+                      <div class="mt-3 text-center">
+                        <%= link_to "Already have account? Login here", new_session_path(resource_name) %><br />
+                        <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+                      </div>
+                  </div>
+              </div>
+          </div>
+  
+      </div>
+      <!-- End of Content Wrapper -->
+  
   </div>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+  <!-- End of Page Wrapper -->
