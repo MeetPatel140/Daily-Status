@@ -1,35 +1,36 @@
-<%= form_with(model: [@status, @task], local: true) do |form| %>
-  <div class="nested-fields">
-    <div class="field">
-      <%= form.label :title %>
-      <%= form.text_field :title %>
+<!-- Task Form -->
+<div class="container">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-heading"><i class="fa fa-plus"></i> Add Task</div>
+        <%= form_with(model: [@status, @task], local: true) do |f| %>
+          <div class="form-group">
+            <%= f.label :title, for: "title" %>
+            <%= f.text_field :title, autofocus: true, autocomplete: "title", placeholder: "Enter your Task's Title here..", required: true, class: "form-control", id: "title" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :description, for: "description" %>
+            <%= f.text_area :description, autocomplete: "description", placeholder: "Enter your Task's Description here..", required: true, class: "form-control", id: "description" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :start_time, for: "start_time" %>
+            <%= f.datetime_local_field :start_time, required: true, class: "form-control", id: "start_time" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :end_time, for: "end_time" %>
+            <%= f.datetime_local_field :end_time, required: true, class: "form-control", id: "end_time" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :screenshot, for: "screenshot" %>
+            <%= f.file_field :screenshot, class: "form-control", id: "screenshot" %>
+          </div>
+          <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
+            <i class="fa-solid fa-fw fa-floppy-disk"></i>
+            <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Saving...</span>
+            <span class="loading-text">Save Task</span>
+          <% end %>
+        <% end %>
+      </div>
     </div>
-
-    <div class="field">
-      <%= form.label :description %>
-      <%= form.text_area :description %>
-    </div>
-
-    <div class="field">
-      <%= form.label :start_time %>
-      <%= form.datetime_local_field :start_time %>
-    </div>
-
-    <div class="field">
-      <%= form.label :end_time %>
-      <%= form.datetime_local_field :end_time %>
-    </div>
-
-    <div class="field">
-      <%= form.label :screenshot %>
-      <%= form.file_field :screenshot %>
-    </div>
-
-    <!-- Add any additional task fields here -->
-    <%= form.submit 'Save Task', class: 'btn btn-primary' %>
-
-    <%= link_to 'Remove Task', '#', class: 'remove-task' %>
   </div>
-<% end %>
-
-<%= link_to 'Add Task', '#', class: 'add-task' %>
+  
