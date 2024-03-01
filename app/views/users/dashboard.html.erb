@@ -5,7 +5,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
             <div class="sidebar-brand-icon">
                 <i class="fas fa-laptop-code"></i>
             </div>
@@ -17,7 +17,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="dashboard.php">
+            <a class="nav-link" href="#">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
@@ -26,9 +26,9 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-3">
 
-        <!-- Nav Item - Auction Products -->
+        <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" href="auction_products.php">
+            <a class="nav-link" href="#">
                 <i class="fa-solid fa-fw fa-list-check"></i>
                 <span>Statuses</span>
             </a>
@@ -39,7 +39,7 @@
 
         <!-- Nav Item - Approve Account Requests -->
         <li class="nav-item">
-            <a class="nav-link" href="approve_account_requests.php">
+            <a class="nav-link" href="#">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Employees</span>
             </a>
@@ -50,7 +50,7 @@
 
         <!-- Nav Item - Logout -->
         <li class="nav-item">
-            <a class="nav-link" href="approve_account_requests.php">
+            <a class="nav-link" href="#">
                 <i class="fa-solid fa-fw fa-sign-out"></i>
                 <span>Logout</span>
             </a>
@@ -102,7 +102,7 @@
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
                             </a>
@@ -125,62 +125,57 @@
                 <!-- Content Row -->
                 <div class="row">
 
-                    <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-primary shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Current Product Name</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="current-product">Loading ..</div>
+                                            Employees Present</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="current-employees-present">Loading ..</div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-box-open fa-2x text-gray-300"></i>
+                                        <i class="fas fa-users fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Current Product Price</div>
-                                        <div id="current-price" class="h5 mb-0 font-weight-bold text-gray-800">Loading ..</div>
+                                            Pending Reviews</div>
+                                        <div id="current-pending-reviews" class="h5 mb-0 font-weight-bold text-gray-800">Loading ..</div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
+                                        <i class="fas fa-list-ol fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Account Approval Requests</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed Reviews</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="current-completed-reviews">Loading ..
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-user-check fa-2x text-gray-300"></i>
+                                        <i class="fa-solid fa-list-check fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-                    <!-- Pending Requests Card Example -->
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-danger shadow h-100 py-2">
                             <div class="card-body">
@@ -237,13 +232,13 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <?php foreach ($bidLogsData as $bidLog) { ?>
+                                    <?php foreach ($LogsData as $Log) { ?>
                                         <tr>
-                                            <td><?php echo $bidLog['bid_id']; ?></td>
-                                            <td><?php echo $bidLog['timestamp']; ?></td>
-                                            <td><?php echo $bidLog['username']; ?></td>
-                                            <td><?php echo $bidLog['product_name']; ?></td>
-                                            <td style="text-align: right;">₹<?php echo $bidLog['bid_price']; ?></td>
+                                            <td><?php echo $Log['id']; ?></td>
+                                            <td><?php echo $Log['timestamp']; ?></td>
+                                            <td><?php echo $Log['username']; ?></td>
+                                            <td><?php echo $Log['product_name']; ?></td>
+                                            <td style="text-align: right;">₹<?php echo $Log['bid_price']; ?></td>
                                             <td style="color: green; text-align: right;">+ ₹<?php echo $bidLog['bidded_difference']; ?></td>
                                         </tr>
                                     <?php } ?>
@@ -277,3 +272,95 @@
 <!-- End of Page Wrapper -->
 <%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "btn btn-primary" %>
 <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-danger" %>
+
+<script>
+        $(document).ready(function() {
+            function refreshPage() {
+                window.location.reload(); // Reload the current page
+            }
+
+            // Refresh the page after 1 minute
+            setTimeout(refreshPage, 60000);
+
+            // Function to fetch real-time data from the server using AJAX
+            function updateDashboardData() {
+                // Create an XMLHttpRequest object
+                const xhr = new XMLHttpRequest();
+
+                // Configure the GET request to fetch data from the server
+                xhr.open('GET', '#', true);
+
+                // Set the callback function to handle the response
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            // Parse the JSON response from the server
+                            const responseData = JSON.parse(xhr.responseText);
+
+                            // Update the dashboard with the fetched data
+                            document.getElementById("current-employees-present").textContent = responseData.currentEmployeesPresent;
+                            document.getElementById("current-pending-reviews").textContent = responseData.currentPendingReviews;
+                            document.getElementById("current-pending-reviews").src = responseData.currentPendingReviews;
+
+                        } else {
+                            // Handle the error if the request fails
+                            console.error('Error while fetching data from the server');
+                        }
+                    }
+                };
+
+                // Send the AJAX request
+                xhr.send();
+            }
+
+
+            // Call the function to update the dashboard data initially
+            updateDashboardData();
+
+            // Update the dashboard data every 1 second
+            setInterval(updateDashboardData, 1000); // Update every 1 second
+
+            // Function to update CPU load
+            function updateCPULoad() {
+                // Simulate CPU load with a random value (0% to 100%)
+                const cpuLoad = Math.floor(Math.random() * 100);
+
+                // Update the CPU load value
+                document.getElementById('cpuLoad').textContent = cpuLoad + '%';
+
+                // Update the CPU load progress bar
+                document.getElementById('cpuLoadBar').style.width = cpuLoad + '%';
+            }
+
+            // Update CPU load initially
+            updateCPULoad();
+
+            // Refresh CPU load every 5 second
+            setInterval(updateCPULoad, 5000);
+            // Refresh data every 10 second 
+            setInterval(refreshBidLogs, 10000);
+            // Refresh data every 10 second
+            setInterval(loadLogs, 10000);
+
+            // Function to refresh logs data
+            function refreshLogs() {
+                $.ajax({
+                    url: '#', // This page itself
+                    type: 'GET',
+                    success: function(data) {
+                        // Replace the current table with the updated one
+                        $('#dataTable tbody').html($(data).find('#dataTable tbody').html());
+                    },
+                    error: function() {
+                        console.error('Error refreshing logs data.');
+                    }
+                });
+            }
+
+            // Initial load of bid_logs data
+            refreshLogs();
+
+            // Refresh data every second (adjust as needed)
+            setInterval(refreshLogs, 10000);
+        });
+    </script>
