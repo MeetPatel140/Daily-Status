@@ -1,7 +1,112 @@
-<p>Hello <%= @resource.email %>!</p>
+<!DOCTYPE html>
+<html lang="en">
 
-<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Locked Notification</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F4F4F4;
+      margin: 0;
+      padding: 0;
+    }
 
-<p>Click the link below to unlock your account:</p>
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-<p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    .info-box {
+      background-color: #F9F9F9;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 5px 10px;
+      font-size: 16px;
+      text-align: center;
+      text-decoration: none;
+      color: #ffffff !important;
+      background-color: #00268d;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .button:hover {
+      background-color: #001550;
+    }
+
+    .note {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #666;
+    }
+
+    .social-icons {
+      margin-top: 15px;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      margin: 0 10px;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Account Locked Notification</h1>
+
+    <div class="info-box">
+      <p>Hello <%= @resource.email %>!</p>
+
+      <p>Your account has been locked due to an excessive number of unsuccessful sign-in attempts.</p>
+
+      <p>Click the link below to unlock your account:</p>
+
+      <p><a href="<%= unlock_url(@resource, unlock_token: @token) %>" class="button"><i class="fa-solid fa-fw fa-lock-open"></i> Unlock my account</a></p>
+    </div>
+
+    <div class="footer">
+      <p>For support, please contact us at <a href="mailto:meetsolanki140@gmail.com">meetsolanki140@gmail.com</a></p>
+      <p>Visit our website: <a href="https://db97-2405-201-2026-3800-35df-8d8-90a6-ee1c.ngrok-free.app/">Daily Status</a></p>
+
+      <div class="social-icons">
+        <a href="https://wa.me/+916353877251" target="_blank"><i class="fa-solid fa-fw fa-whatsapp"></i></a>
+        <a href="https://github.com/MeetPatel140" target="_blank"><i class="fa-solid fa-fw fa-github"></i></a>
+        <a href="https://www.instagram.com/___professional_boy/" target="_blank"><i class="fa-solid fa-fw fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/in/meet-solanki-065074210/" target="_blank"><i class="fa-solid fa-fw fa-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

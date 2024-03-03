@@ -2,93 +2,63 @@
 <html>
   <head>
     <title>DailyStatusWebapp</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
-    <!-- Font Awesome -->
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-    
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS Bundle -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+    <link href="https://raw.githubusercontent.com/MeetPatel140/cdn/main/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://raw.githubusercontent.com/MeetPatel140/cdn/main/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://raw.githubusercontent.com/MeetPatel140/cdn/main/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.11.0/dist/toastify.min.css" integrity="sha384-2q4JsoY+xOyo3V3P+XJF0LvQR4qohQldp5zjxGfB7zOJ6Ii0/K3pzcEXkT62e6cQ" crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     
     <!-- Custom Files for App's Design -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <link href="https://raw.githubusercontent.com/MeetPatel140/cdn/main/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="https://raw.githubusercontent.com/MeetPatel140/cdn/main/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="https://raw.githubusercontent.com/MeetPatel140/cdn/main/css/sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.css">
-    
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/owl-carousel-2/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/owl-carousel-2/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/css/style.css">
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/images/favicon.png" />
+
 
 
   </head>
 
-  <body id="page-top">
+  <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
     
-    <%= render 'shared/notification' %>
-
     <%= yield %>
-    
 
     <!-- Custom Scripts for App's Design -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-bqMbKFXNO9CqZk4eivVo6nZwFm72JGxuYJQJl+2OgZfjABZz2pMz0SF+6tpVzcI" crossorigin="anonymous"></script>
-    <!-- jQuery Easing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <!-- Admin JS -->
-    <script src="https://raw.githubusercontent.com/MeetPatel140/cdn/main/js/sb-admin-2.min.js"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Chart Area Demo -->
-    <script src="https://raw.githubusercontent.com/MeetPatel140/cdn/main/vendor/javascript/demo/chart-area-demo.js"></script>
-    <!-- Chart Pie Demo -->
-    <script src="https://raw.githubusercontent.com/MeetPatel140/cdn/main/vendor/javascript/demo/chart-pie-demo.js"></script>
-    <!-- DataTables -->
-    <script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script>
-    <!-- DataTables Bootstrap 4 -->
-    <script src="https://cdn.datatables.net/1.11.6/js/dataTables.bootstrap4.min.js"></script>
-    <!-- DataTables Demo -->
-    <script src="https://raw.githubusercontent.com/MeetPatel140/cdn/main/vendor/javascript/demo/datatables-demo.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    <!-- Tostify CSS & JS -->
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-    <script>
-      $(document).ready(function() {
-        $('.loading-btn').on('click', function() {
-          // Disable the button to prevent multiple clicks
-          // $(this).prop('disabled', true);
-
-          // Hide the icon and text, show the loading elements
-          $(this).find('.fa-sign-in, .loading-text').addClass('d-none');
-          $(this).find('.loading-icon').removeClass('d-none');
-
-          // Change the button text to "Loading..."
-          $(this).find('.loading-text').text('Loading...');
-        });
-      });
-    </script>
-
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/js/vendor.bundle.base.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/chart.js/Chart.min.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/progressbar.js/progressbar.min.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/off-canvas.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/hoverable-collapse.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/misc.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/settings.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/todolist.js"></script>
+    <script defer src="https://raw.githubusercontent.com/MeetPatel140/CORONA-Admin-Dark-Template-/main/assets/js/dashboard.js"></script>
+    
   </body>
 </html>

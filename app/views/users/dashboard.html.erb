@@ -5,7 +5,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
             <div class="sidebar-brand-icon">
                 <i class="fas fa-laptop-code"></i>
             </div>
@@ -17,7 +17,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="dashboard.php">
+            <a class="nav-link" href="#">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
@@ -26,23 +26,12 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-3">
 
-        <!-- Nav Item - Auction Products -->
+        <!-- Nav Item -->
         <li class="nav-item">
-            <a class="nav-link" href="auction_products.php">
+            <%= link_to statuses_path, class: "nav-link" do %>
                 <i class="fa-solid fa-fw fa-list-check"></i>
                 <span>Statuses</span>
-            </a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-3">
-
-        <!-- Nav Item - Approve Account Requests -->
-        <li class="nav-item">
-            <a class="nav-link" href="approve_account_requests.php">
-                <i class="fas fa-fw fa-users"></i>
-                <span>Employees</span>
-            </a>
+            <% end %>
         </li>
 
         <!-- Divider -->
@@ -50,11 +39,12 @@
 
         <!-- Nav Item - Logout -->
         <li class="nav-item">
-            <a class="nav-link" href="approve_account_requests.php">
-                <i class="fa-solid fa-fw fa-sign-out"></i>
+            <%= link_to destroy_user_session_path, method: :delete, class: "nav-link" do %>
+                <i class="fas fa-sign-out-alt fa-fw"></i>
                 <span>Logout</span>
-            </a>
+            <% end %>
         </li>
+
 
         <!-- Divider -->
         <hr class="sidebar-divider my-3 d-none d-md-block">
@@ -63,15 +53,6 @@
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-
-    <script>
-        $(document).ready(function () {
-            $("#sidebarToggle").on("click", function () {
-                $("#accordionSidebar").toggleClass("toggled");
-            });
-        });
-    </script>
-
     </ul>
     <!-- End of Sidebar -->
 
@@ -91,26 +72,60 @@
 
                 <h5>Daily Status</h5>
 
+                <!-- Container for Current Date & Time -->
+                <div id="currentDateTime" class="ml-auto mr-3"></div>
+
+                <!-- Check-in Duration -->
+                <div id="checkinDuration" class="ml-3 text-gray-600"></div>
+                
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
+
+                    <% if current_user.admin? %>
+                        <div class="mt-4 text-primary font-weight-bold text-uppercase mb-1">
+                            <i class="fa-solid fa-crown mr-1"></i>Admin
+                        </div>
+                    <% else %>
+                    <div class="mt-3">
+                        <% if current_user.has_checked_out_today? %>
+                          <%= link_to checkouts_path, class: "btn btn-danger ml-2", disabled: true do %>
+                            <i class="fas fa-check mr-1"></i>
+                            Already Checked Out for Today
+                          <% end %>
+                        <% else %>
+                          <%= link_to checkouts_path, data: { turbo_method: :post }, class: "btn btn-primary ml-2" do %>
+                            <i class="fas fa-paper-plane mr-1"></i>
+                            Check Out
+                          <% end %>
+                        <% end %>
+                    </div>    
+                    <% end %>
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= current_user.name %></span>
-                            <img class="img-profile rounded-circle" src="https://raw.githubusercontent.com/MeetPatel140/cdn/main/img/undraw_profile.svg">
+                            <img class="img-profile rounded-circle" src="https://raw.githubusercontent.com/MeetPatel140/cdn/main/undraw_profile.svg">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
                             </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" do %>
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                            <% end %>
                         </div>
+
                     </li>
-
                 </ul>
-
             </nav>
             <!-- End of Topbar -->
 
@@ -119,70 +134,103 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Admin Dashboard</h1>
+                    <h1 class="h3 mb-0 text-gray-800"><% if current_user.admin? %><i class="fa-solid fa-user-shield mr-1"></i> Admin Dashboard <% else %> <i class="fa-solid fa-user mr-1"></i> Employee Dashboard <% end %></h1>
                 </div>
 
                 <!-- Content Row -->
                 <div class="row">
 
-                    <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-primary shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Current Product Name</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="current-product">Loading ..</div>
+                                            Employees in Company</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="current-employees-present"><%= @employees_present_count || 'Loading ..' %></div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-box-open fa-2x text-gray-300"></i>
+                                        <i class="fas fa-users fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-danger shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                            Pending Reviews</div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                    <% if current_user.admin? %>
+                                                        <%= "#{@pending_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                                                    <% else %>
+                                                        <%= "#{@current_employees_pending_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                                                    <% end %>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: <% if current_user.admin? %>
+                                                        <%= (@pending_reviews_count.to_f / @total_reviews_count) * 100 %>%
+                                                    <% else %>
+                                                        <%= (@current_employees_pending_reviews_count.to_f / @current_employees_total_reviews_count.to_f) * 100 %>%
+                                                    <% end %>" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fa-solid fa-code fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-success shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Current Product Price</div>
-                                        <div id="current-price" class="h5 mb-0 font-weight-bold text-gray-800">Loading ..</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Account Approval Requests</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                            Completed Reviews</div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                    <% if current_user.admin? %>
+                                                        <%= "#{@completed_reviews_count}/#{@total_reviews_count}" || 'Loading ..' %>
+                                                    <% else %>
+                                                        <%= "#{@current_employees_completed_reviews_count}/#{@current_employees_total_reviews_count}" || 'Loading ..' %>
+                                                    <% end %>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: <% if current_user.admin? %>
+                                                        <%= (@completed_reviews_count.to_f / @total_reviews_count) * 100 %>%
+                                                    <% else %>
+                                                        <%= (@current_employees_completed_reviews_count.to_f / @current_employees_total_reviews_count.to_f) * 100 %>%
+                                                    <% end %>" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-user-check fa-2x text-gray-300"></i>
+                                        <i class="fa-solid fa-list-check fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-                    <!-- Pending Requests Card Example -->
                     <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-danger shadow h-100 py-2">
+                        <div class="card border-left-warning shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
@@ -194,13 +242,13 @@
                                             </div>
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
-                                                    <div id="cpuLoadBar" class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div id="cpuLoadBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fas fa-wifi fa-2x text-gray-300"></i>
+                                        <i class="fas fa-server fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
@@ -211,40 +259,34 @@
                 <!-- Table -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Live bids by Users</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Employees Check in-out Logs</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 10%;">#BidID</th>
-                                        <th style="width: 15%;">Timestamp</th>
-                                        <th style="width: 15%;">Username</th>
-                                        <th>Product</th>
-                                        <th style="width: 12%;">Bid Price</th>
-                                        <th style="width: 10%;">Bidded Difference</th>
+                                        <th style="width: 10%;">#EmployeeID</th>
+                                        <th style="width: 25%;">Timestamp</th>
+                                        <th style="width: 15%;">Name</th>
+                                        <th style="width: 15%;">Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
                                     <tr>
-                                        <th style="width: 10%;">#BidID</th>
-                                        <th style="width: 15%;">Timestamp</th>
-                                        <th style="width: 15%;">Username</th>
-                                        <th>Product</th>
-                                        <th style="width: 12%;">Bid Price</th>
-                                        <th style="width: 10%;">Bidded Difference</th>
+                                        <th style="width: 10%;">#EmployeeID</th>
+                                        <th style="width: 25%;">Timestamp</th>
+                                        <th style="width: 15%;">Name</th>
+                                        <th style="width: 15%;">Action</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <?php foreach ($bidLogsData as $bidLog) { ?>
+                                    <?php foreach ($LogsData as $Log) { ?>
                                         <tr>
-                                            <td><?php echo $bidLog['bid_id']; ?></td>
-                                            <td><?php echo $bidLog['timestamp']; ?></td>
-                                            <td><?php echo $bidLog['username']; ?></td>
-                                            <td><?php echo $bidLog['product_name']; ?></td>
-                                            <td style="text-align: right;">₹<?php echo $bidLog['bid_price']; ?></td>
-                                            <td style="color: green; text-align: right;">+ ₹<?php echo $bidLog['bidded_difference']; ?></td>
+                                            <td><?php echo $Log['id']; ?></td>
+                                            <td><?php echo $Log['timestamp']; ?></td>
+                                            <td><?php echo $Log['username']; ?></td>
+                                            <td><?php echo $Log['product_name']; ?></td>
                                         </tr>
                                     <?php } ?>
                                     <!-- Table rows will be populated using AJAX -->
@@ -275,3 +317,63 @@
 
 </div>
 <!-- End of Page Wrapper -->
+<%= link_to "Check Out", checkouts_path, data: { turbo_method: :post }, class: "btn btn-primary" %>
+
+<script>
+    $(document).ready(function() {
+      $("#sidebarToggle").on("click", function () {
+        $("#accordionSidebar").toggleClass("toggled");
+      });
+  
+      function updateCPULoad() {
+        // Simulate CPU load with a random value (0% to 100%)
+        const cpuLoad = Math.floor(Math.random() * 100);
+  
+        // Update the CPU load value
+        document.getElementById('cpuLoad').textContent = cpuLoad + '%';
+  
+        // Update the CPU load progress bar
+        document.getElementById('cpuLoadBar').style.width = cpuLoad + '%';
+      }
+  
+      // Update CPU load initially
+      updateCPULoad();
+  
+      // Refresh CPU load every 5 seconds
+      setInterval(updateCPULoad, 5000);
+  
+      function updateDateTime() {
+        var currentDate = new Date();
+        var options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        var formattedDateTime = currentDate.toLocaleString('en-US', options);
+  
+        document.getElementById('currentDateTime').innerText = formattedDateTime;
+      }
+  
+      // Initial call to display the date and time
+      updateDateTime();
+  
+      // Set up an interval to update the date and time every second
+      setInterval(updateDateTime, 1000);
+  
+      function updateCheckinDuration() {
+        // Assuming you have a variable storing the check-in time in your view
+        // Make sure <%= current_user.checkin_time %> is properly formatted or converted to a string
+        var checkinTime = new Date('<%= current_user.checkin_time&.strftime('%Y-%m-%dT%H:%M:%S') %>'); // Replace with your actual variable
+  
+        // Calculate the duration
+        var currentTime = new Date();
+        var duration = currentTime - checkinTime;
+  
+        // Format the duration (you can customize this part)
+        var hours = Math.floor(duration / (60 * 60 * 1000));
+        var minutes = Math.floor((duration % (60 * 60 * 1000)) / (60 * 1000));
+        var seconds = Math.floor((duration % (60 * 1000)) / 1000);
+  
+        // Update the UI with the formatted duration
+        document.getElementById('checkinDuration').innerText = 'Check-in Duration: ' + hours + 'h ' + minutes + 'm ' + seconds + 's';
+        // ...
+      }
+    });
+  </script>
+  
