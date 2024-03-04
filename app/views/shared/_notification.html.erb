@@ -1,0 +1,16 @@
+<% if notice || alert || flash.any? %>
+  <script>
+    Toastify({
+      text: "<%= notice || alert || flash.values.first.html_safe %>",
+      duration: 5000,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+      close: true,
+      backgroundColor: "<%= notice ? 'linear-gradient(to right, #007bff, #00b0ff)' : 'linear-gradient(to right, #ff0000, #ff8080)' %>",
+      callback: function() {
+        console.log("Notification closed");
+      },
+    }).showToast();
+  </script>
+<% end %>
