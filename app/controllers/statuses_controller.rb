@@ -12,6 +12,7 @@ class StatusesController < ApplicationController
     else
       @statuses = current_user.statuses
     end
+    @status = Status.new(status: "pending", remarks: nil)
   end
 
   # GET /statuses/1
@@ -20,9 +21,11 @@ class StatusesController < ApplicationController
   end
 
   # GET /statuses/new
-  def new
-    @status = Status.new
-  end
+# app/controllers/statuses_controller.rb
+def new
+  @status = Status.new(status: "pending", remarks: nil)
+end
+
 
   # GET /statuses/1/edit
   def edit

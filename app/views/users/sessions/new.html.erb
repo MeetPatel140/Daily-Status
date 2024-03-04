@@ -30,15 +30,15 @@
                             <%= f.label :password, for: "password" %>
                             <%= f.password_field :password, autocomplete: "password", placeholder: "Enter your password here..", required: true, class: "form-control", id: "password" %>
                         </div>
-                        <!-- <% if devise_mapping.rememberable? %>
+                        <% if devise_mapping.rememberable? %>
                             <div class="form-group">
                             <%= f.check_box :remember_me %>
                             <%= f.label :remember_me %>
                             </div>
-                        <% end %> -->
+                        <% end %>
                         <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
                             <i class="fa-solid fa-fw fa-sign-in"></i>
-                            <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Loading...</span>
+                            <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Loging in...</span>
                             <span class="loading-text">Login</span>
                         <% end %>
                     <% end %>

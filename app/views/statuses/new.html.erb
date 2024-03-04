@@ -1,5 +1,201 @@
-<h1>New Status</h1>
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-<%= render 'form', status: @status %>
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+            <div class="sidebar-brand-icon">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Daily Status<sup></sup></div>
+        </a>
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider my-3">
+  
+        <!-- Nav Item -->
+        <li class="nav-item">
+          <%= link_to root_path, class: "nav-link" do %>
+              <i class="fas fa-fw fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+          <% end %>
+      </li>
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider my-3">
+  
+        <!-- Nav Item -->
+        <li class="nav-item">
+            <%= link_to statuses_path, class: "nav-link" do %>
+                <i class="fa-solid fa-fw fa-list-check"></i>
+                <span>Statuses</span>
+            <% end %>
+        </li>
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider my-3">
+  
+        <!-- Nav Item - Logout -->
+        <li class="nav-item">
+            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link" do %>
+                <i class="fas fa-sign-out-alt fa-fw"></i>
+                <span>Logout</span>
+            <% end %>
+        </li>
+  
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider my-3 d-none d-md-block">
+  
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+    </ul>
+    <!-- End of Sidebar -->
+  
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+  
+        <!-- Main Content -->
+        <div id="content">
+  
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+  
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+  
+                <h5>Daily Status</h5> 
+  
+                <!-- Container for Current Date & Time -->
+                <div id="currentDateTime" class="ml-auto mr-3"></div>
+  
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+  
+                  <!-- Check Out Button with Tick Icon -->
+                    <% if current_user.admin? %>
+                          <div class="mt-4 text-primary font-weight-bold text-uppercase mb-1">
+                              <i class="fa-solid fa-crown mr-1"></i>Admin
+                          </div>
+                      <% else %>
+                      <div class="mt-3">
+                          <% if current_user.has_checked_out_today? %>
+                            <%= link_to checkouts_path, class: "btn btn-danger ml-2", disabled: true do %>
+                              <i class="fas fa-check mr-1"></i>
+                              Already Checked Out for Today
+                            <% end %>
+                          <% else %>
+                            <%= link_to checkouts_path, data: { turbo_method: :post }, class: "btn btn-primary ml-2" do %>
+                              <i class="fas fa-paper-plane mr-1"></i>
+                              Check Out
+                            <% end %>
+                          <% end %>
+                      </div>    
+                      <% end %>
+  
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= current_user.name %></span>
+                            <img class="img-profile rounded-circle" src="https://raw.githubusercontent.com/MeetPatel140/cdn/main/undraw_profile.svg">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" do %>
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                            <% end %>
+                        </div>
+  
+                    </li>
+                </ul>
+            </nav>
+            <!-- End of Topbar -->
+  
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+  
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">
+                        <%= link_to statuses_path, class: "text-dark" do %>
+                        <i class="fas fa-user mr-1"></i> Employee's Statuses
+                      <% end %>
+                      <% if @status.daily_report.present? %>
+                        > <%= @status.daily_report %>
+                      <% else %>
+                        > New Status
+                      <% end %>
+                    </h1>
+                </div>
 
-<%= link_to 'Back', statuses_path %>
+                <%= render 'form', status: @status %>
+                <!-- <%= link_to 'Back', statuses_path %> -->
+                
+                
+            </div>
+            <!-- /.container-fluid -->
+  
+        </div>
+        <!-- End of Main Content -->
+  
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Daily Status <a href="https://www.linkedin.com/in/meet-solanki-065074210/">Meet Solanki</a></span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  
+  <script>
+        $(document).ready(function() {
+            $("#sidebarToggle").on("click", function () {
+                $("#accordionSidebar").toggleClass("toggled");
+            });
+            function updateCPULoad() {
+                // Simulate CPU load with a random value (0% to 100%)
+                const cpuLoad = Math.floor(Math.random() * 100);
+  
+                // Update the CPU load value
+                document.getElementById('cpuLoad').textContent = cpuLoad + '%';
+  
+                // Update the CPU load progress bar
+                document.getElementById('cpuLoadBar').style.width = cpuLoad + '%';
+            }
+            // Update CPU load initially
+            updateCPULoad();
+            // Refresh CPU load every 5 second
+            setInterval(updateCPULoad, 5000);
+            function updateDateTime() {
+                var currentDate = new Date();
+                var options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+                var formattedDateTime = currentDate.toLocaleString('en-US', options);
+        
+                document.getElementById('currentDateTime').innerText = formattedDateTime;
+            }
+            // Initial call to display the date and time
+            updateDateTime();
+            // Set up an interval to update the date and time every second
+            setInterval(updateDateTime, 1000);
+        });
+  </script>

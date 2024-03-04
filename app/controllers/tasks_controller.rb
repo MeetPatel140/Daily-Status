@@ -50,6 +50,12 @@ class TasksController < ApplicationController
     redirect_to tasks_url
   end
 
+  def update_status
+    task = Task.find(params[:task_id])
+    task.update(status: params[:status])
+    head :ok
+  end
+
   private
 
   def set_status

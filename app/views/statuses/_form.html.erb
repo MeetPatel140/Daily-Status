@@ -1,36 +1,45 @@
-<%= form_with(model: [@status], local: true, id: 'status-form') do |form| %>
-<% if @status.errors.any? %>
-<div id="error_explanation">
-  <h2><%= pluralize(@status.errors.count, "error") %> prohibited this status from being saved:</h2>
+<!-- Task Form -->
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <div class="form-heading"><i class="fa fa-plus"></i> Add Task</div>
+      <%= form_with(model: [@status], local: true, id: 'status-form') do |f| %>
+      <% if @status.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@status.errors.count, "error") %> prohibited this status from being saved:</h2>
+        <ul>
+          <% @status.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
 
-  <ul>
-    <% @status.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
+      <% if !current_user.admin? %>
+        <div class="form-group">
+          <%= f.label :date, for: "date" %>
+          <%= f.date_field :date, autofocus: true, autocomplete: "date", placeholder: "Enter your Status Date here..", required: true, class: "form-control", id: "date" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :daily_report, for: "daily_report" %>
+          <%= f.text_area :daily_report, autocomplete: "daily_report", placeholder: "Enter your Status's Description here..", required: true, class: "form-control", id: "daily_report" %>
+        </div>
+        <div class="form-group">
+          <%= f.label :github_pr_link, for: "github_pr_link" %>
+          <%= f.text_field :github_pr_link, required: true, class: "form-control", id: "github_pr_link" %>
+        </div>
+      <% else  %>
+        <div class="form-group">
+          <%= f.label :remarks, for: "remarks" %>
+          <%= f.text_area :remarks, required: true, class: "form-control", id: "remarks" %>
+        </div>
+      <% end %>
+        <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
+          <i class="fa-solid fa-fw fa-floppy-disk"></i>
+          <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Saving...</span>
+          <span class="loading-text">Save Status</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 </div>
-<% end %>
-
-<% if !current_user.admin? %>
-
-  <%= form.label :date %>
-  <%= form.date_field :date, class: 'form-control' %>
-
-  <%= form.label :daily_report %>
-  <%= form.text_area :daily_report, class: 'form-control' %>
-
-  <%= form.label :github_pr_link %>
-  <%= form.text_field :github_pr_link, class: 'form-control' %>
-
-<% else %>
-
-  <%= form.label :remarks %>
-  <%= form.text_area :remarks, class: 'form-control' %>
-  
-<% end %>
-
-<%= form.submit 'Save Status', data: { turbo_stream: true }, class: 'btn btn-primary' %>
-
-<%= link_to 'Add Task', new_task_path, class: 'btn-btn-secondary' %>
-
-<% end %>
