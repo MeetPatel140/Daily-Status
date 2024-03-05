@@ -1,6 +1,13 @@
 class CheckoutsController < ApplicationController
   before_action :authenticate_user!
 
+  def create
+    @checkout = current_user.checkouts.build(checkout_params)
+    @checkout.calculate_and_save_duration
+
+    # rest of the code
+  end
+
 
   def process_checkouts
     checkout = current_user.checkouts.new(checked_out_at: Time.current)
