@@ -154,19 +154,12 @@
                     <div class="card-body">
                       <% if !current_user.admin? %>
                         <% if current_user.has_checked_out_today? %>
-                            <%= link_to checkouts_path, class: "btn btn-danger ml-2 float-right mb-3", disabled: true do %>
-                              <i class="fa-solid fa-circle-info mr-1"></i>
-                              Sorry, Ony 1 Status Daily
-                            <% end %>
-                          <% else %>
-                          <% end %>
-                          <% end %>
-                          
-                          <% if !current_user.admin? %>
-                            <%= link_to new_status_path, class: "btn btn-success float-right mb-3", title: "New Status" do %>
+                          <button class="btn btn-danger ml-2 float-right mb-3"><i class="fa-solid fa-circle-info mr-1"></i> Sorry, Only 1 Daily Status</button>
+                        <% else %>
+                          <%= link_to new_status_path, class: "btn btn-success float-right mb-3", title: "New Status" do %>
                             <i class="fas fa-plus"></i> New Status
                           <% end %>
-                          
+                        <% end %>    
                       <% end %>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -248,13 +241,13 @@
 
                                                   <% if current_user.admin? %>
                                                     <% if status.status == "pending" || status.status == "resolved" %>
-                                                    <%= button_to mark_completed_status_path(status), data: { turbo_method: :get, turbo_confirm: 'Are you sure you want to Mark this Status as Completed?' }, class: 'btn btn-success mr-2', remote: true do %>
+                                                    <%= button_to mark_completed_status_path(status), method: :get, data: { turbo_confirm: 'Are you sure you want to Mark this Status as Completed?' }, class: 'btn btn-success mr-2', remote: true do %>
                                                       <i class="fas fa-check"></i> Mark as Completed
                                                     <% end %>
                                                   <% end %>
                                                 <% else %>
                                                     <% if status.status == "issue" %>
-                                                      <%= button_to mark_resolved_status_path(status), data: { turbo_method: :get, turbo_confirm: 'Are you sure you want to Mark this Status as Resolved?' }, class: 'btn btn-success mr-2', remote: true do %>
+                                                      <%= button_to mark_resolved_status_path(status), method: :get, data: { turbo_confirm: 'Are you sure you want to Mark this Status as Resolved?' }, class: 'btn btn-success mr-2', remote: true do %>
                                                         <i class="fas fa-check"></i> Mark as Resolved
                                                       <% end %>
                                                     <% end %>

@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   # helper_method :current_user
 
+  def get_cpu_load
+    cpu_load = `powershell.exe -File "#{Rails.root}/get_cpu_load.ps1"`.strip
+    render json: { cpu_load: cpu_load.to_f }
+  end
   # def current_user
   #   @current_user ||= user.find_by(id: session[:user_id]) if session[:user_id]
   # end

@@ -172,7 +172,7 @@
                         </span>
                     
                         <% if !current_user.admin? && @status.status == "issue" %>
-                          <%= button_to mark_resolved_status_path(@status), data: { turbo_method: :get, turbo_confirm: 'Are you sure you want to Mark this Status as Resolved?' }, class: 'btn btn-success float-right mb-3', style: 'margin-left: auto;', remote: true do %>
+                          <%= button_to mark_resolved_status_path(@status), method: :get, data: { turbo_confirm: 'Are you sure you want to Mark this Status as Resolved?' }, class: 'btn btn-success float-right mb-3', style: 'margin-left: auto;', remote: true do %>
                             <i class="fas fa-check"></i> Mark as Resolved
                           <% end %>
                         <% end %>
