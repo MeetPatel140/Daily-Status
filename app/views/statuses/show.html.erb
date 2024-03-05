@@ -131,32 +131,49 @@
           <div class="container-fluid">
 
              <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><%= @status.daily_report %></h1>
-  </div>
-  
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <h4>Date: <%= @status.date.strftime('%d-%m-%Y') %></h4>
-          <h4>Github PR Link: <%= link_to "Open PR Link" , @status.github_pr_link, target: "_blank" %></h4>
-        </div>
-        <div class="col-md-6">
-            <h4>Status: 
-                <% if @status.status.downcase == 'pending' %>
-                <span class="text-info"><b>Pending</b></span>
-                <% elsif @status.status.downcase == 'completed' %>
-                <span class="text-success"><b>Completed</b></span>
-                <% else %>
-                <%= @status.status %>
-                <% end %>
-            </h4>
-            <h4>Remarks: <%= @status.remarks %></h4>
-        </div>
-      </div>
-    </div>
-  </div>
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">
+                  <%= link_to statuses_path, class: "text-dark" do %>
+                    <i class="fas fa-user mr-1"></i> Employee's Statuses
+                  <% end %>
+                  <% if @status.daily_report.present? %>
+                      > <%= @status.daily_report %>
+                  <% end %>
+                </h1>
+              </div>
+              
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h4>Date: <%= @status.date.strftime('%d-%m-%Y') %></h4>
+                      <h4>Github PR Link: <%= link_to "Open PR Link" , @status.github_pr_link, target: "_blank" %></h4>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Status: 
+                            <% if @status.status.downcase == 'pending' %>
+                            <span class="text-info"><b>Pending</b></span>
+                            <% elsif @status.status.downcase == 'issue' %>
+                            <span class="text-danger"><b>Issue</b></span>
+                            <% elsif @status.status.downcase == 'resolved' %>
+                            <span class="text-warning"><b>Resolved</b></span>
+                            <% elsif @status.status.downcase == 'completed' %>
+                            <span class="text-success"><b>Completed</b></span>
+                            <% else %>
+                            <%= @status.status %>
+                            <% end %>
+                        </h4>
+                        <h4>Remarks:
+                          <% if @status.remarks.present? %>
+                            <%= @status.remarks %>
+                          <% else %>
+                            <span class="text-info"><b>No Remarks</b></span>
+                          <% end %>
+                        </h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
   
               <!-- Table -->
                 <div class="card shadow mb-4">

@@ -13,4 +13,6 @@ Rails.application.routes.draw do
 
   post '/checkouts', to: 'checkouts#process_checkouts'
   post '/new_status', to: 'new_status#send_email'
+  put 'update_status', to: 'tasks#update_status'
+
 end

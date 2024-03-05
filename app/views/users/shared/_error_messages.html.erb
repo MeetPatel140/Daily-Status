@@ -1,15 +1,22 @@
 <% if resource.errors.any? %>
   <div id="error_explanation" data-turbo-cache="false">
-    <h2>
-      <%= I18n.t("errors.messages.not_saved",
-                 count: resource.errors.count,
-                 resource: resource.class.model_name.human.downcase)
-       %>
-    </h2>
-    <ul>
-      <% resource.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+    <ul class="error-list">
+      <%= render partial: 'users/shared/error_messages_content', locals: { resource: resource } %>
     </ul>
   </div>
+  <script>
+    // Notify with error messages
+    Toastify({
+      text: '<%= j render partial: "users/shared/error_messages_content", locals: { resource: resource } %>',
+      duration: 5000,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+      close: true,
+      backgroundColor: "linear-gradient(to right, #ff0000, #ff8080)",
+      callback: function() {
+        console.log("Notification closed");
+      },
+    }).showToast();
+  </script>
 <% end %>

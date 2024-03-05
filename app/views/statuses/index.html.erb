@@ -132,7 +132,11 @@
 
               <!-- Page Heading -->
               <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                  <h1 class="h3 mb-0 text-gray-800">Employee's Statuses</h1>
+                  <h1 class="h3 mb-0 text-gray-800">
+                    <%= link_to statuses_path, class: "text-dark" do %>
+                        <i class="fas fa-user mr-1"></i> Employee's Statuses
+                      <% end %>
+                  </h1>
               </div>
 
               <!-- Table -->
@@ -143,14 +147,14 @@
                     
                     <div class="card-body">
                       <% if !current_user.admin? %>
-                        <!-- <% if current_user.has_checked_out_today? %>
+                        <% if current_user.has_checked_out_today? %>
                             <%= link_to checkouts_path, class: "btn btn-danger ml-2 float-right mb-3", disabled: true do %>
                               <i class="fa-solid fa-circle-info mr-1"></i>
                               Sorry, Ony 1 Status Daily
                             <% end %>
                           <% else %>
                           <% end %>
-                          <% end %> -->
+                          <% end %>
                           <!-- New Status Link (Right Side) -->
                           <%= link_to new_status_path, class: "btn btn-success float-right mb-3", title: "New Status" do %>
                           <i class="fas fa-plus"></i> New Status
@@ -181,8 +185,8 @@
                                 <tbody>
                                   <% @statuses.each do |status| %>
                                         <tr>
-                                            <td><%= status.date.strftime('%d-%m-%Y') %></td>
-                                            <td><%= status.daily_report %></td>
+                                            <td><%= status.date&.strftime('%d-%m-%Y') %></td>
+                                            <td><%= link_to status.daily_report, status_path(status)   %></td>
                                             <td>
                                               <%= link_to status.github_pr_link, target: "_blank", class: "btn btn-primary" do %>
                                                 <i class="fa-solid fa-external-link"></i> Open PR Link
