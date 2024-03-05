@@ -59,7 +59,7 @@ class TasksController < ApplicationController
   private
 
   def set_status
-    @status = Status.find(params[:status_id])
+    @status = Status.find_by(params[:status_id] || params[:id])
     if @status.nil?
       redirect_to statuses_path, alert: 'Status not found'
     end

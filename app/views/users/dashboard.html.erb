@@ -186,7 +186,11 @@
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fa-solid fa-code fa-2x text-gray-300"></i>
+                                        <% if current_user.admin? %>
+                                            <i class="fas fa-search fa-2x text-gray-300"></i>
+                                        <% else %>
+                                            <i class="fa-solid fa-code fa-2x text-gray-300"></i>
+                                        <% end %>
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +226,11 @@
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fa-solid fa-list-check fa-2x text-gray-300"></i>
+                                        <% if current_user.admin? %>
+                                            <i class="fas fa-check fa-2x text-gray-300"></i>
+                                        <% else %>
+                                            <i class="fa-solid fa-list-check fa-2x text-gray-300"></i>
+                                        <% end %>
                                     </div>
                                 </div>
                             </div>
@@ -281,16 +289,15 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <?php foreach ($LogsData as $Log) { ?>
-                                        <tr>
-                                            <td><?php echo $Log['id']; ?></td>
-                                            <td><?php echo $Log['timestamp']; ?></td>
-                                            <td><?php echo $Log['username']; ?></td>
-                                            <td><?php echo $Log['product_name']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    <!-- Table rows will be populated using AJAX -->
-                                </tbody>
+                                    <% @logs.each do |log| %>
+                                      <tr>
+                                        <td><%= log.user_id %></td>
+                                        <td><%= log.timestamp.strftime('%d-%m-%Y %I:%M:%S %p') %></td>
+                                        <td><%= log.user.name %></td>
+                                        <td><%= log.action %></td>
+                                      </tr>
+                                    <% end %>
+                                  </tbody>
                             </table>
                         </div>
                     </div>

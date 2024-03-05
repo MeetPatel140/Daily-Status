@@ -132,7 +132,27 @@
   
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800"><%= @status.daily_report %> > New Task</h1>
+                    <h1 class="h3 mb-0 text-gray-800">
+                        <% if current_user.admin? %>
+                        <%= link_to statuses_path, class: "text-dark" do %>
+                          <i class="fas fa-user mr-1"></i> Employee's Statuses
+                        <% end %>
+                        <% else %>
+                        <%= link_to statuses_path, class: "text-dark" do %>
+                          <i class="fas fa-user mr-1"></i> Your Statuses
+                        <% end %>
+                        <% end %>
+                        <% if @status.daily_report.present? %>
+                          > <%= link_to @status, class: "text-dark" do %>
+                            <%= @status.daily_report%>
+                          <% end %>
+                        <% end %>
+                        <% if @task.new_record? %>
+                          > New Task
+                        <% else %>
+                          > <%= @task.title %>
+                        <% end %>
+                    </h1>
                 </div>
 
                 <%= render 'form', task: @task %>

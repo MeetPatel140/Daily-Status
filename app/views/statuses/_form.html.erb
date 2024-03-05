@@ -2,7 +2,13 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
-      <div class="form-heading"><i class="fa fa-plus"></i> Add Task</div>
+      <div class="form-heading">
+        <% if @status.new_record? %>
+          <i class="fa fa-plus"></i> Add Status
+        <% else %>
+          <i class="fa fa-edit"></i> Edit Status
+        <% end %>
+      </div>
       <%= form_with(model: [@status], local: true, id: 'status-form') do |f| %>
       <% if @status.errors.any? %>
       <div id="error_explanation">
@@ -26,7 +32,7 @@
         </div>
         <div class="form-group">
           <%= f.label :github_pr_link, for: "github_pr_link" %>
-          <%= f.text_field :github_pr_link, required: true, class: "form-control", id: "github_pr_link" %>
+          <%= f.text_field :github_pr_link, required: true, class: "form-control", id: "github_pr_link", placeholder: "Enter your Github PR Link here.." %>
         </div>
       <% else  %>
         <div class="form-group">
@@ -34,11 +40,19 @@
           <%= f.text_area :remarks, required: true, class: "form-control", id: "remarks" %>
         </div>
       <% end %>
+      <% if @status.new_record? %>
         <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
           <i class="fa-solid fa-fw fa-floppy-disk"></i>
           <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Saving...</span>
           <span class="loading-text">Save Status</span>
         <% end %>
+      <% else %>
+        <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
+        <i class="fa-solid fa-fw fa-cloud-arrow-up"></i>
+        <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Updating...</span>
+        <span class="loading-text">Update Status</span>
+        <% end %>
+      <% end %>
       <% end %>
     </div>
   </div>

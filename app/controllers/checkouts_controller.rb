@@ -5,6 +5,7 @@ class CheckoutsController < ApplicationController
   def process_checkouts
     checkout = current_user.checkouts.new(checked_out_at: Time.current)
     if checkout.save
+      Log.create(user_id: resource.id, timestamp: Time.now, action: 'check-out')
       AdminMailer.check_out_email(current_user).deliver_now
       redirect_to root_path, notice: 'Check-out successful!'
     else

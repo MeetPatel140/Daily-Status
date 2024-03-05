@@ -134,41 +134,32 @@
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">
-                      <%= link_to root_path, class: "text-dark" do %>
-                        <i class="fas fa-user mr-1"></i> Employee's Dashboard
-                      <% end %>
+                        <% if current_user.admin? %>
+                        <%= link_to statuses_path, class: "text-dark" do %>
+                          <i class="fas fa-user mr-1"></i> Employee's Statuses
+                        <% end %>
+                        <% else %>
+                        <%= link_to statuses_path, class: "text-dark" do %>
+                          <i class="fas fa-user mr-1"></i> Your Statuses
+                        <% end %>
+                        <% end %>
                       <% if @status.daily_report.present? %>
-                        > <%= @status.daily_report %>
+                        >   <%= link_to @status, class: "text-dark" do %>
+                            <%= @status.daily_report%>
+                            <% end %>
                       <% else %>
                         > New Status
+                      <% end %>
+                      <% if @status.new_record? %>
+                        > New Status
+                      <% else %>
+                        > Edit Status
                       <% end %>
                     </h1>
                 </div>
   
-                <!-- Table -->
-                  <div class="card shadow mb-4">
-                      <div class="card-header py-3">
-                          <h6 class="m-0 font-weight-bold text-primary">Statuses</h6>
-                      </div>
-                      
-                      <div class="card-body">
-                        <% if !current_user.admin? %>
-                          <% if current_user.has_checked_out_today? %>
-                              <%= link_to checkouts_path, class: "btn btn-danger ml-2 float-right mb-3", disabled: true do %>
-                                <i class="fa-solid fa-circle-info mr-1"></i>
-                                Sorry, Ony 1 Status Daily
-                              <% end %>
-                            <% else %>
-                            <% end %>
-                            <% end %>
-                            <!-- New Status Link (Right Side) -->
-                            <%= link_to new_status_path, class: "btn btn-success float-right mb-3", title: "New Status" do %>
-                            <i class="fas fa-plus"></i> New Status
-                          
-                        <% end %>
-                          
-                      </div>
-                    </div>
+                <%= render 'form', status: @status %>
+                <!-- <%= link_to 'Back', statuses_path %> -->
             </div>
             <!-- /.container-fluid -->
   
@@ -220,10 +211,3 @@
             setInterval(updateDateTime, 1000);
         });
   </script>
-
-
-<h1>Edit Status</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Back', statuses_path %>

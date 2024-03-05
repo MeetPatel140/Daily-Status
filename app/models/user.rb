@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :statuses
   has_many :tasks, through: :statuses
   has_many :checkouts, class_name: 'Checkout'
+  has_many :logs
 
   def admin?
     role == "admin"
