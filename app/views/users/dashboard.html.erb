@@ -186,7 +186,11 @@
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fa-solid fa-code fa-2x text-gray-300"></i>
+                                        <% if current_user.admin? %>
+                                            <i class="fas fa-search fa-2x text-gray-300"></i>
+                                        <% else %>
+                                            <i class="fa-solid fa-code fa-2x text-gray-300"></i>
+                                        <% end %>
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +226,11 @@
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <i class="fa-solid fa-list-check fa-2x text-gray-300"></i>
+                                        <% if current_user.admin? %>
+                                            <i class="fas fa-check fa-2x text-gray-300"></i>
+                                        <% else %>
+                                            <i class="fa-solid fa-list-check fa-2x text-gray-300"></i>
+                                        <% end %>
                                     </div>
                                 </div>
                             </div>
@@ -256,6 +264,32 @@
                     </div>
                 </div>
 
+                <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-lg-6 mb-4">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Weekly Durations</h6>
+                          </div>
+                          <div class="card-body">
+                            <canvas id="weeklyChart" width="400" height="150"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-4">
+                        <div class="card shadow">
+                          <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Weekly Statuses</h6>
+                          </div>
+                          <div class="card-body">
+                            <canvas id="weeklyStatusChart" width="400" height="150"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
                 <!-- Table -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -281,21 +315,33 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <?php foreach ($LogsData as $Log) { ?>
+                                    <% if current_user.admin? %>
+                                      <!-- Display logs for all users (admin view) -->
+                                      <% @logs.order(timestamp: :desc).each do |log| %>
                                         <tr>
-                                            <td><?php echo $Log['id']; ?></td>
-                                            <td><?php echo $Log['timestamp']; ?></td>
-                                            <td><?php echo $Log['username']; ?></td>
-                                            <td><?php echo $Log['product_name']; ?></td>
+                                          <td><%= log.user.id %></td>
+                                          <td><%= log.timestamp.strftime('%Y-%m-%d %I:%M:%S %p') %></td>
+                                          <td><%= log.user.name %></td>
+                                          <td><%= log.action %></td>
                                         </tr>
-                                    <?php } ?>
-                                    <!-- Table rows will be populated using AJAX -->
-                                </tbody>
+                                      <% end %>
+                                    <% else %>
+                                      <!-- Display logs for the current user -->
+                                      <% current_user.logs.order(timestamp: :desc).each do |log| %>
+                                        <tr>
+                                          <td><%= log.user.id %></td>
+                                          <td><%= log.timestamp.strftime('%Y-%m-%d %I:%M:%S %p') %></td>
+                                          <td><%= log.user.name %></td>
+                                          <td><%= log.action %></td>
+                                        </tr>
+                                      <% end %>
+                                    <% end %>
+                                  </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
+                
             </div>
             <!-- /.container-fluid -->
 
@@ -324,21 +370,27 @@
       });
   
       function updateCPULoad() {
-        // Simulate CPU load with a random value (0% to 100%)
-        const cpuLoad = Math.floor(Math.random() * 100);
-  
-        // Update the CPU load value
-        document.getElementById('cpuLoad').textContent = cpuLoad + '%';
-  
-        // Update the CPU load progress bar
-        document.getElementById('cpuLoadBar').style.width = cpuLoad + '%';
+        // Use AJAX to fetch CPU load from the server
+        fetch('/get_cpu_load')
+          .then(response => response.json())
+          .then(data => {
+            const cpuLoad = parseFloat(data.cpu_load);
+      
+            // Update the CPU load value
+            document.getElementById('cpuLoad').textContent = cpuLoad.toFixed(2) + '%';
+      
+            // Update the CPU load progress bar
+            document.getElementById('cpuLoadBar').style.width = cpuLoad.toFixed(2) + '%';
+          })
+          .catch(error => console.error('Error fetching CPU load:', error));
       }
-  
+      
       // Update CPU load initially
       updateCPULoad();
-  
+      
       // Refresh CPU load every 5 seconds
       setInterval(updateCPULoad, 5000);
+      
   
       function updateDateTime() {
         var currentDate = new Date();
@@ -374,4 +426,89 @@
       }
     });
   </script>
-  
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('weeklyChart').getContext('2d');
+
+    // Fetch user's weekly duration from the server
+    var userWeeklyDuration = <%= current_user.weekly_duration_sum %>;
+
+    // Dynamically generate an array of days starting from the current day
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var today = new Date().getDay();
+    var rotatedDays = days.slice(today).concat(days.slice(0, today));
+
+    // Update the chart
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: rotatedDays,
+        datasets: [{
+          label: 'Minutes',
+          data: [userWeeklyDuration],
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Days'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            stepSize: 1 // Adjust this to control the step size on the y-axis
+          }
+        }
+      }
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Fetch data from the server or use embedded data
+    var weeklyStatusCount = <%= @current_user.statuses_submitted_last_week_count %>;
+
+    // Dynamically generate an array of days starting from the current day
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var today = new Date().getDay();
+    var rotatedDays = days.slice(today).concat(days.slice(0, today));
+
+    // Set up the chart
+    var ctx = document.getElementById('weeklyStatusChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: rotatedDays,
+        datasets: [{
+          label: 'Statuses',
+          data: [weeklyStatusCount],
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Days'
+            }
+          },
+          y: {
+            beginAtZero: true,
+            stepSize: 1 // Adjust this to control the step size on the y-axis
+          }
+        }
+      }
+    });
+  });
+</script>

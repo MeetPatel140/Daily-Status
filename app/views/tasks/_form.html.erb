@@ -2,7 +2,13 @@
 <div class="container">
     <div class="card">
       <div class="card-body">
-        <div class="form-heading"><i class="fa fa-plus"></i> Add Task</div>
+        <div class="form-heading">
+          <% if @task.new_record? %>
+          <i class="fa fa-plus"></i> Add Task
+        <% else %>
+          <i class="fa fa-edit"></i> Edit Task
+        <% end %>
+        </div>
         <%= form_with(model: [@status, @task], local: true) do |f| %>
           <div class="form-group">
             <%= f.label :title, for: "title" %>
@@ -24,12 +30,20 @@
             <%= f.label :screenshot, for: "screenshot" %>
             <%= f.file_field :screenshot, class: "form-control", id: "screenshot" %>
           </div>
-          <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
-            <i class="fa-solid fa-fw fa-floppy-disk"></i>
-            <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Saving...</span>
-            <span class="loading-text">Save Task</span>
-          <% end %>
+          <% if @task.new_record? %>
+        <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
+          <i class="fa-solid fa-fw fa-floppy-disk"></i>
+          <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Saving...</span>
+          <span class="loading-text">Save Task</span>
         <% end %>
+      <% else %>
+        <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
+        <i class="fa-solid fa-fw fa-cloud-arrow-up"></i>
+        <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Updating...</span>
+        <span class="loading-text">Update Task</span>
+        <% end %>
+      <% end %>
+      <% end %>
       </div>
     </div>
   </div>

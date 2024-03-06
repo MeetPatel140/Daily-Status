@@ -27,7 +27,7 @@
                           <div class="form-group">
                             <%= f.label :password, "New Password", for: "password" %>
                             <% if @minimum_password_length %>
-                            <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+                                <em>(<%= @minimum_password_length %> characters minimum)</em><br />
                             <% end %>
                             <%= f.password_field :password, autofocus: true, autocomplete: "new-password", placeholder: "Enter your new password here...", required: true, class: "form-control", id: "password" %>
                             </div>
@@ -36,8 +36,8 @@
                             <%= f.label :password_confirmation, "Confirm New Password", for: "password_confirmation" %>
                             <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Confirm your new password here...", required: true, class: "form-control", id: "password_confirmation" %>
                             
-                          <%= f.button class: "btn btn-primary btn-block loading-btn", type: "submit" do %>
-                              <i class="fa-solid fa-fw fa-lock-spin loading-text"></i>
+                          <%= f.button class: "btn btn-primary btn-block loading-btn mt-3", type: "submit" do %>
+                              <i class="fa-solid fa-fw fa-shield-halved loading-text"></i>
                               <span class="loading-icon d-none"><i class="fa-solid fa-fw fa-spinner"></i> Reseting...</span>
                               <span class="loading-text"> Reset</span>
                           <% end %>
@@ -55,18 +55,4 @@
       </div>
       <!-- End of Content Wrapper -->
   
-  </div>
-  <!-- End of Page Wrapper -->
-
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
