@@ -23,4 +23,5 @@ class UsersController < ApplicationController
     @logs = Log.all
 
   end
+
 end

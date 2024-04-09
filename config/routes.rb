@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :users
   resources :statuses
   resources :tasks
+  resources :time_records
 
   resources :statuses do
     resources :tasks
@@ -18,10 +19,12 @@ Rails.application.routes.draw do
     end
   end
 
-  post '/checkouts', to: 'checkouts#process_checkouts'
+  post '/check_in', to: 'time_records#check_in'
+  post '/check_out', to: 'time_records#check_out'
   post '/new_status', to: 'new_status#send_email'
   put 'update_status', to: 'tasks#update_status'
-  get '/get_cpu_load', to: 'application#get_cpu_load'
-
+  get '/get_checkin_time', to: 'time_records#get_checkin_time'
+  get '/get_recorded_duration', to: 'time_records#get_recorded_duration'
+  get '/weekly_durations', to: 'time_records#weekly_durations'
 
 end

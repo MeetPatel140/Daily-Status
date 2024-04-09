@@ -76,8 +76,15 @@
                 <div id="currentDateTime" class="ml-auto mr-3"></div>
 
                 <!-- Check-in Duration -->
-                <div id="checkinDuration" class="ml-3 text-gray-600"></div>
-                
+                <% unless current_user.admin? %>
+                    <div id="checkinDuration" class="ml-3 text-gray-600"></div>
+                <% end %>
+
+                <!-- Recorded Duration -->
+                <% unless current_user.admin? %>
+                    <div id="recordedDuration" class="ml-3 text-gray-600"></div>
+                <% end %>
+
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
@@ -87,18 +94,31 @@
                         </div>
                     <% else %>
                     <div class="mt-3">
-                        <% if current_user.has_checked_out_today? %>
-                          <%= link_to checkouts_path, class: "btn btn-danger ml-2", disabled: true do %>
+                        <% if TimeRecord.has_checked_in_today?(current_user) %>
+                            <button class="btn btn-outline-success ml-2" disabled>
                             <i class="fas fa-check mr-1"></i>
-                            Already Checked Out for Today
-                          <% end %>
+                            Checked In
+                            </button>
                         <% else %>
-                          <%= link_to checkouts_path, data: { turbo_method: :post }, class: "btn btn-primary ml-2" do %>
-                            <i class="fas fa-paper-plane mr-1"></i>
-                            Check Out
-                          <% end %>
+                            <%= link_to check_in_path, data: { turbo_method: :post, confirm: 'Are you sure you want to check in?' }, class: "btn btn-primary ml-2", id: "checkinButton" do %>
+                            <i class="fas fa-sign-in-alt mr-1"></i>
+                            Check In
+                            <% end %>
                         <% end %>
-                    </div>    
+
+                        <% if TimeRecord.has_checked_out_today?(current_user) %>
+                            <button class="btn btn-outline-success ml-2" disabled>
+                            <i class="fas fa-check mr-1"></i>
+                            Checked Out
+                            </button>
+                        <% else %>
+                            <%= link_to check_out_path, data: { turbo_method: :post, confirm: 'Are you sure you want to check out?' }, class: "btn btn-primary ml-2", id: "checkoutButton", disabled: true do %>
+                            <i class="fas fa-sign-out-alt mr-1"></i>
+                            Check Out
+                            <% end %>
+                        <% end %>
+                        </div>
+  
                     <% end %>
 
                     <!-- Nav Item - User Information -->
@@ -278,14 +298,32 @@
                       </div>
                       <div class="col-lg-6 mb-4">
                         <div class="card shadow">
-                          <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Weekly Statuses</h6>
-                          </div>
-                          <div class="card-body">
-                            <canvas id="weeklyStatusChart" width="400" height="150"></canvas>
-                          </div>
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Your Calendar</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="calendar">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Mon</th>
+                                                <th>Tue</th>
+                                                <th>Wed</th>
+                                                <th>Thu</th>
+                                                <th>Fri</th>
+                                                <th>Sat</th>
+                                                <th>Sun</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="calendar-body">
+                                            <!-- JavaScript will populate the table here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                      </div>
+                    </div>
+
                     </div>
                   </div>
                   
@@ -364,151 +402,166 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-      $("#sidebarToggle").on("click", function () {
-        $("#accordionSidebar").toggleClass("toggled");
-      });
-  
-      function updateCPULoad() {
-        // Use AJAX to fetch CPU load from the server
-        fetch('/get_cpu_load')
-          .then(response => response.json())
-          .then(data => {
-            const cpuLoad = parseFloat(data.cpu_load);
-      
-            // Update the CPU load value
-            document.getElementById('cpuLoad').textContent = cpuLoad.toFixed(2) + '%';
-      
-            // Update the CPU load progress bar
-            document.getElementById('cpuLoadBar').style.width = cpuLoad.toFixed(2) + '%';
-          })
-          .catch(error => console.error('Error fetching CPU load:', error));
-      }
-      
-      // Update CPU load initially
-      updateCPULoad();
-      
-      // Refresh CPU load every 5 seconds
-      setInterval(updateCPULoad, 5000);
-      
-  
-      function updateDateTime() {
-        var currentDate = new Date();
-        var options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-        var formattedDateTime = currentDate.toLocaleString('en-US', options);
-  
-        document.getElementById('currentDateTime').innerText = formattedDateTime;
-      }
-  
-      // Initial call to display the date and time
-      updateDateTime();
-  
-      // Set up an interval to update the date and time every second
-      setInterval(updateDateTime, 1000);
-  
-      function updateCheckinDuration() {
-        // Assuming you have a variable storing the check-in time in your view
-        // Make sure <%= current_user.checkin_time %> is properly formatted or converted to a string
-        var checkinTime = new Date('<%= current_user.checkin_time&.strftime('%Y-%m-%dT%H:%M:%S') %>'); // Replace with your actual variable
-  
-        // Calculate the duration
-        var currentTime = new Date();
-        var duration = currentTime - checkinTime;
-  
-        // Format the duration (you can customize this part)
-        var hours = Math.floor(duration / (60 * 60 * 1000));
-        var minutes = Math.floor((duration % (60 * 60 * 1000)) / (60 * 1000));
-        var seconds = Math.floor((duration % (60 * 1000)) / 1000);
-  
-        // Update the UI with the formatted duration
-        document.getElementById('checkinDuration').innerText = 'Check-in Duration: ' + hours + 'h ' + minutes + 'm ' + seconds + 's';
-        // ...
-      }
-    });
-  </script>
+    $(document).ready(function () {
+        $("#sidebarToggle").on("click", function () {
+            $("#accordionSidebar").toggleClass("toggled");
+        });
 
+        // Function to fetch and display weekly durations
+        function fetchWeeklyDurations() {
+            // Fetch weekly durations for the current user from the server
+            fetch('/weekly_durations')
+                .then(response => response.json())
+                .then(data => {
+                    const durations = data.durations;
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var ctx = document.getElementById('weeklyChart').getContext('2d');
+                    // Extract dates and durations from the response
+                    const dates = durations.map(entry => entry.date);
+                    const durationValues = durations.map(entry => entry.duration);
 
-    // Fetch user's weekly duration from the server
-    var userWeeklyDuration = <%= current_user.weekly_duration_sum %>;
-
-    // Dynamically generate an array of days starting from the current day
-    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var today = new Date().getDay();
-    var rotatedDays = days.slice(today).concat(days.slice(0, today));
-
-    // Update the chart
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: rotatedDays,
-        datasets: [{
-          label: 'Minutes',
-          data: [userWeeklyDuration],
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Days'
-            }
-          },
-          y: {
-            beginAtZero: true,
-            stepSize: 1 // Adjust this to control the step size on the y-axis
-          }
+                    // Display weekly durations using Chart.js
+                    const ctx = document.getElementById('weeklyChart').getContext('2d');
+                    const weeklyChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: 'Duration (in hours)',
+                                data: durationValues,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching weekly durations:', error);
+                });
         }
-      }
-    });
-  });
-</script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Fetch data from the server or use embedded data
-    var weeklyStatusCount = <%= @current_user.statuses_submitted_last_week_count %>;
+        // Call the function to fetch and display weekly durations when the page loads
+        fetchWeeklyDurations();
 
-    // Dynamically generate an array of days starting from the current day
-    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var today = new Date().getDay();
-    var rotatedDays = days.slice(today).concat(days.slice(0, today));
+        function updateCPULoad() {
+            var randomLoad = (Math.random() * 50 + 50).toFixed(2);
 
-    // Set up the chart
-    var ctx = document.getElementById('weeklyStatusChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: rotatedDays,
-        datasets: [{
-          label: 'Statuses',
-          data: [weeklyStatusCount],
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Days'
-            }
-          },
-          y: {
-            beginAtZero: true,
-            stepSize: 1 // Adjust this to control the step size on the y-axis
-          }
+            // Update CPU load text and progress bar
+            document.getElementById('cpuLoad').textContent = randomLoad + '%';
+            document.getElementById('cpuLoadBar').style.width = randomLoad + '%';
         }
-      }
+
+        // Initial call to update CPU load
+        updateCPULoad();
+
+        // Update CPU load every 3 seconds (3000 milliseconds)
+        setInterval(updateCPULoad, 3000);
+
+        function updateDateTime() {
+            var currentDate = new Date();
+            var options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            var formattedDateTime = currentDate.toLocaleString('en-US', options);
+
+            document.getElementById('currentDateTime').innerText = formattedDateTime;
+        }
+
+        // Initial call to display the date and time
+        updateDateTime();
+
+        // Set up an interval to update the date and time every second
+        setInterval(updateDateTime, 1000);
+
+        // Variable to store the interval ID for the check-in duration timer
+        let checkinDurationTimer;
+
+        // Function to update the check-in duration UI
+        function updateCheckinDurationUI() {
+            const storedStartTime = localStorage.getItem('checkinStartTime');
+            if (storedStartTime) {
+                const startTime = new Date(storedStartTime);
+                const currentTime = new Date();
+                const duration = currentTime - startTime;
+                const hours = Math.floor(duration / (60 * 60 * 1000)).toString().padStart(2, '0');
+                const minutes = Math.floor((duration % (60 * 60 * 1000)) / (60 * 1000)).toString().padStart(2, '0');
+                const seconds = Math.floor((duration % (60 * 1000)) / 1000).toString().padStart(2, '0');
+                document.getElementById('checkinDuration').innerText = 'Duration: ' + hours + ':' + minutes + ':' + seconds;
+            } else {
+                document.getElementById('checkinDuration').innerText = 'Duration: 00:00:00';
+            }
+        }
+
+        // Function to start the check-in duration timer
+        function startCheckinDurationTimer() {
+            // Update the check-in duration every second
+            checkinDurationTimer = setInterval(updateCheckinDurationUI, 1000);
+            const startTime = new Date();
+            localStorage.setItem('checkinStartTime', startTime);
+        }
+
+        // Function to stop the check-in duration timer
+        function stopCheckinDurationTimer() {
+            clearInterval(checkinDurationTimer);
+            localStorage.removeItem('checkinStartTime');
+        }
+
+        // Event listener for the Check-in button
+        const checkinButton = document.querySelector('#checkinButton');
+        if (checkinButton) {
+            checkinButton.addEventListener('click', function () {
+                // Start the check-in duration timer when the user checks in
+                startCheckinDurationTimer();
+            });
+        }
+
+        // Event listener for the Check-out button
+        const checkoutButton = document.querySelector('#checkoutButton');
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', function () {
+                // Stop the check-in duration timer when the user checks out
+                stopCheckinDurationTimer();
+
+                // Send the recorded duration to the server
+                fetch('/checkout', {
+                    method: 'POST'
+                })
+                    .then(response => {
+                        // Handle response from the server
+                        if (response.ok) {
+                            // Success
+                            console.log('Duration recorded successfully.');
+                            // Update the recorded duration from the server
+                            fetch('/get_recorded_duration')
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.recorded_duration) {
+                                        // If recorded duration exists, update the UI
+                                        const recordedDuration = data.recorded_duration;
+                                        document.getElementById('recordedDuration').innerText = 'Duration: ' + recordedDuration;
+                                    } else {
+                                        // If recorded duration does not exist, reset the UI
+                                        document.getElementById('recordedDuration').innerText = 'Duration: 00:00:00';
+                                    }
+                                })
+                                .catch(error => console.error('Error fetching recorded duration:', error));
+                        } else {
+                            // Error
+                            console.error('Failed to record duration.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error recording duration:', error);
+                    });
+            });
+        }
+
+        // Fetch and update the check-in duration UI when the page loads
+        updateCheckinDurationUI();
     });
-  });
 </script>
