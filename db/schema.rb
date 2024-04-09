@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_05_120424) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_07_123629) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,24 +39,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_05_120424) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "checkins", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.datetime "checked_in_at", null: false
-    t.datetime "checked_out_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "duration"
-  end
-
-  create_table "checkouts", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.datetime "checked_out_at", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "duration"
-    t.index ["user_id"], name: "index_checkouts_on_user_id"
-  end
-
   create_table "logs", force: :cascade do |t|
     t.integer "user_id"
     t.datetime "timestamp"
@@ -71,8 +53,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_05_120424) do
     t.string "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "check_in"
-    t.datetime "check_out"
     t.text "daily_report"
     t.integer "user_id"
     t.string "status", default: "pending"
@@ -87,6 +67,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_05_120424) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["status_id"], name: "index_tasks_on_status_id"
+  end
+
+  create_table "time_records", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "check_in_at"
+    t.datetime "check_out_at"
+    t.integer "duration_in_seconds", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_time_records_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -104,13 +94,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_05_120424) do
     t.string "role", default: "employee"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "checkin_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "checkouts", "users"
   add_foreign_key "tasks", "statuses"
+  add_foreign_key "time_records", "users"
 end
