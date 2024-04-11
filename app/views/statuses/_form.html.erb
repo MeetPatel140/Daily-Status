@@ -24,7 +24,7 @@
       <% if !current_user.admin? %>
         <div class="form-group">
           <%= f.label :date, for: "date" %>
-          <%= f.date_field :date, autocomplete: "date", placeholder: "Enter your Status Date here..", required: true, class: "form-control", id: "date", value: Date.today.strftime('%Y-%m-%d') %>
+          <%= f.date_field :date, autocomplete: "date", placeholder: "Enter your Status Date here..", required: true, class: "form-control", id: "date", value: Date.today.strftime('%Y-%m-%d'), min: Date.today %>
         </div>
         <div class="form-group">
           <%= f.label :daily_report, for: "daily_report" %>

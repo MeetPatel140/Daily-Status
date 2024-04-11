@@ -37,4 +37,8 @@ class User < ApplicationRecord
   def has_checked_out_today?
     time_records.exists?(check_out_at: true, created_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)
   end
+
+  def has_created_status_today?
+    statuses.exists?(created_at: Date.today.beginning_of_day..Date.today.end_of_day)
+  end
 end

@@ -240,8 +240,8 @@
                                     <tr>
                                         <th style="width: 5%;">Title</th>
                                         <th style="width: 15%;">Description</th>
-                                        <th style="width: 8%;">Start Time</th>
-                                        <th style="width: 10%;">End Time</th>
+                                        <th style="width: 5%;">Start Time</th>
+                                        <th style="width: 5%;">End Time</th>
                                         <th style="width: 5%;">Screenshot</th>
                                         <th style="width: 5%;">Action</th>
                                     </tr>
@@ -250,65 +250,66 @@
                                     <tr>
                                       <th style="width: 5%;">Title</th>
                                         <th style="width: 15%;">Description</th>
-                                        <th style="width: 8%;">Start Time</th>
-                                        <th style="width: 10%;">End Time</th>
+                                        <th style="width: 5%;">Start Time</th>
+                                        <th style="width: 5%;">End Time</th>
                                         <th style="width: 5%;">Screenshot</th>
                                         <th style="width: 5%;">Action</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                  <% @status.tasks.each do |task| %>
-                                  <tr>
-                                            <td><%= link_to task.title, edit_task_path(task) %></td>
-                                            <td><%= task.description %></td>
-                                            <td><%= task.start_time.strftime('%I:%M %p') %></td>
-                                            <td><%= task.end_time.strftime('%I:%M %p') %></td>
-                                            <td>
-                                              <% if task.screenshot.attached? %>
-                                                <%= link_to '#', data: { toggle: 'modal', target: '#screenshotModal' } do %>
-                                                  <%= image_tag task.screenshot, style: 'max-width: 100px; max-height: 100px;' %>
+                                    <% @status.tasks.each do |task| %>
+                                        <tr>
+                                        <td><%= link_to task.title, edit_task_path(task) %></td>
+                                        <td><%= task.description %></td>
+                                        <td><%= task.start_time.strftime('%I:%M %p') %></td>
+                                        <td><%= task.end_time.strftime('%I:%M %p') %></td>
+                                        
+                                        <td>
+                                            <% if task.screenshot.attached? %>
+                                            <%= link_to '#', data: { toggle: 'modal', target: "#screenshotModal#{task.id}" } do %>
+                                                <%= image_tag task.screenshot, style: 'max-width: 100px; max-height: 100px;' %>
+                                            <% end %>
+                                            <% else %>
+                                            <p>No screenshot available</p>
+                                            <% end %>
+                                        </td>
+
+                                        <!-- Add this modal code at the end of your view or layout -->
+                                        <div class="modal fade" id="screenshotModal<%= task.id %>" tabindex="-1" role="dialog" aria-labelledby="screenshotModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="screenshotModalLabel">Screenshot</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                <% if task.screenshot.attached? %>
+                                                    <%= image_tag task.screenshot, style: 'width: 100%; height: auto;' %>
+                                                <% else %>
+                                                    <p>No screenshot available</p>
                                                 <% end %>
-                                              <% else %>
-                                                <p>No screenshot available</p>
-                                              <% end %>
-                                            </td>
-                                            
-                                            <!-- Add this modal code at the end of your view or layout -->
-                                            <div class="modal fade" id="screenshotModal" tabindex="-1" role="dialog" aria-labelledby="screenshotModalLabel" aria-hidden="true">
-                                              <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                  <div class="modal-header">
-                                                    <h5 class="modal-title" id="screenshotModalLabel">Screenshot</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                      <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                    <% if task.screenshot.attached? %>
-                                                      <%= image_tag task.screenshot, style: 'width: 100%; height: auto;' %>
-                                                    <% else %>
-                                                      <p>No screenshot available</p>
-                                                    <% end %>
-                                                  </div>
                                                 </div>
-                                              </div>
                                             </div>
-                                            
-                                              <td>
-                                                <div class="btn-group" role="group" aria-label="Task Actions">
-                                                  <% if !current_user.admin? %>
-                                                    <%= link_to edit_task_path(task.id), class: "btn btn-warning btn-sm mr-2", title: "Edit" do %>
-                                                      <i class="fas fa-edit"></i> Edit
-                                                    <% end %>
-                                                  <% end %>
-                                                  <%= link_to task_path(task), data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to Delete this Task ?' }, class: "btn btn-danger btn-sm", title: "Delete" do %>
-                                                    <i class="fas fa-trash"></i> Delete
-                                                  <% end %>
-                                                </div>
-                                              </td>                     
+                                            </div>
+                                        </div>
+
+                                        <td>
+                                            <div class="btn-group" role="group" aria-label="Task Actions">
+                                            <% if !current_user.admin? %>
+                                                <%= link_to edit_task_path(task.id), class: "btn btn-warning btn-sm mr-2", title: "Edit" do %>
+                                                <i class="fas fa-edit"></i> Edit
+                                                <% end %>
+                                            <% end %>
+                                            <%= link_to task_path(task), data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to Delete this Task ?' }, class: "btn btn-danger btn-sm", title: "Delete" do %>
+                                                <i class="fas fa-trash"></i> Delete
+                                            <% end %>
+                                            </div>
+                                        </td>                     
                                         </tr>
-                                        <% end %>
-                                </tbody>
+                                    <% end %>
+                                    </tbody>
                             </table>
                         </div>
                     </div>

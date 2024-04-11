@@ -170,9 +170,7 @@
                             <% end %>
                       <% end %>
                       <% if @task.title.present? %>
-                        > <%= link_to @task, class: "text-dark" do %>
-                        <%= @task.title %>
-                        <% end %>
+                        > <%= @task.title %>
                       <% end %>
                       <% if @task.title.blank? %>
                         > New Task
@@ -181,8 +179,6 @@
                 </div>
   
                 <%= render 'form' %>
-                <!-- <%= render 'form', status: @status %> -->
-                <!-- <%= link_to 'Back', statuses_path %> -->
             </div>
             <!-- /.container-fluid -->
   

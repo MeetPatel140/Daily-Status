@@ -174,8 +174,8 @@
                     
                     <div class="card-body">
                       <% if !current_user.admin? %>
-                        <% if current_user.has_checked_out_today? %>
-                          <button class="btn btn-danger ml-2 float-right mb-3"><i class="fa-solid fa-circle-info mr-1"></i> Sorry, Only 1 Daily Status</button>
+                        <% if current_user.has_created_status_today? %>
+                          <button class="btn btn-outline-success ml-2 float-right mb-3 disabled"><i class="fa-solid fa-check mr-1"></i> Already Status Created for Today</button>
                         <% else %>
                           <%= link_to new_status_path, class: "btn btn-success float-right mb-3", title: "New Status" do %>
                             <i class="fas fa-plus"></i> New Status
@@ -183,7 +183,7 @@
                         <% end %>    
                       <% end %>
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered table-hover table-responsive overflow-auto" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%;">Date</th>
@@ -193,8 +193,8 @@
                                         <th style="width: 15%;">Daily Report</th>
                                         <th style="width: 8%;">Github PR Link</th>
                                         <th style="width: 10%;">Remarks</th>
-                                        <th style="width: 5%;">Status</th>
-                                        <th style="width: 10%;">Actions</th>
+                                        <th style="width: 8%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -206,12 +206,12 @@
                                       <th style="width: 15%;">Daily Report</th>
                                       <th style="width: 8%;">Github PR Link</th>
                                       <th style="width: 10%;">Remarks</th>
-                                      <th style="width: 5%;">Status</th>
-                                      <th style="width: 10%;">Actions</th>
+                                      <th style="width: 8%;">Status</th>
+                                      <th style="width: 15%;">Actions</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                  <% @statuses.each do |status| %>
+                                  <% @statuses.reverse_each do |status| %>
                                         <tr>
                                             <td><%= status.date&.strftime('%d-%m-%Y') %></td>
                                             <% if current_user.admin? %>

@@ -20,7 +20,7 @@
           </div>
           <div class="form-group">
             <%= f.label :start_time, for: "start_time" %>
-            <%= f.datetime_local_field :start_time, required: true, class: "form-control", id: "start_time" %>
+            <%= f.datetime_local_field :start_time, required: true, class: "form-control", id: "start_time", value: Time.now %>
           </div>
           <div class="form-group">
             <%= f.label :end_time, for: "end_time" %>
@@ -47,4 +47,3 @@
       </div>
     </div>
   </div>
-  
