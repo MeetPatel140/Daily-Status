@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= @user.name %> just added New Status for Today</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F4F4F4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    p {
+      margin-bottom: 10px;
+      color: #666;
+    }
+    .info-box {
+      background-color: #F9F9F9;
+      padding: 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><%= @user.name %> just added New Status for Today !!</h1>
+    <p>Hello Admin,</p>
+    <div class="info-box">
+      <p><b><u><%= @user.name %></u></b> has just added a New Status for Today:</p>
+      <ul>
+        <li><b>Date:</b> <%= @status.date.strftime('%d-%m-%Y') %></li>
+        <li><b>Daily Report:</b> <%= @status.daily_report %></li>
+        <li><b>GitHub PR Link:</b> <%= link_to "Open PR Link", @status.github_pr_link, target: "_blank" %></li>
+        <li><b>Remarks:</b> <%= @status.remarks.presence || 'No remarks' %></li>
+        <li><b>Status:</b> <%= @status.status %></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

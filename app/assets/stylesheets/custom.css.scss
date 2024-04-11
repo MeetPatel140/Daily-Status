@@ -88,3 +88,66 @@ body {
   }
 }
 
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+  animation: blinking 1s infinite;
+}
+
+@keyframes blinking {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.calendar {
+    width: 100%;
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+    position: relative;
+}
+table th {
+  text-align: center;
+}
+table thead {
+    background-color: #f2f2f2;
+}
+.checked {
+    color: green;
+}
+.cross {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+}
+
+.recordingTab {
+  border-radius: 50px;
+  border: 2px solid gray;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  margin: 0;
+}

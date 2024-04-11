@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employee Check-Out Notification</title>
+  <title><%= @user.name %> just Marked as Resolved</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -36,11 +36,17 @@
 </head>
 <body>
   <div class="container">
-    <h1>Employee Check-Out Notification !!</h1>
+    <h1><%= @user.name %> just Marked as Resolved !!</h1>
     <p>Hello Admin,</p>
     <div class="info-box">
-      <% indian_time = Time.current.in_time_zone('Asia/Kolkata') %>
-      <p><b><u><%= @user.name %></u></b> has Checked Out at <b><u><%= indian_time.strftime('%d-%m-%Y,  %I:%M:%S %p') %></u></b></p>
+      <p><b><u><%= @user.name %></u></b> have just Marked his/her Status as Resolved:</p>
+      <ul>
+        <li><b>Date:</b> <%= @status.date.strftime('%d-%m-%Y') %></li>
+        <li><b>Daily Report:</b> <%= @status.daily_report %></li>
+        <li><b>GitHub PR Link:</b> <%= link_to "Open PR Link", @status.github_pr_link, target: "_blank" %></li>
+        <li><b>Remarks:</b> <%= @status.remarks.presence || 'No remarks' %></li>
+        <li><b>Status:</b> <%= @status.status %></li>
+      </ul>
     </div>
   </div>
 </body>
