@@ -24,11 +24,11 @@
       <% if !current_user.admin? %>
         <div class="form-group">
           <%= f.label :date, for: "date" %>
-          <%= f.date_field :date, autofocus: true, autocomplete: "date", placeholder: "Enter your Status Date here..", required: true, class: "form-control", id: "date" %>
+          <%= f.date_field :date, autocomplete: "date", placeholder: "Enter your Status Date here..", required: true, class: "form-control", id: "date", value: Date.today.strftime('%Y-%m-%d') %>
         </div>
         <div class="form-group">
           <%= f.label :daily_report, for: "daily_report" %>
-          <%= f.text_area :daily_report, autocomplete: "daily_report", placeholder: "Enter your Status's Description here..", required: true, class: "form-control", id: "daily_report" %>
+          <%= f.text_area :daily_report, autofocus: true, autocomplete: "daily_report", placeholder: "Enter your Status's Description here..", required: true, class: "form-control", id: "daily_report" %>
         </div>
         <div class="form-group">
           <%= f.label :github_pr_link, for: "github_pr_link" %>

@@ -26,6 +26,7 @@ class TasksController < ApplicationController
     @status = Status.find(params[:status_id])
     @task = @status.tasks.build(task_params)
     if @task.save
+      Log.create(user_id: @current_user.id, timestamp: Time.now, action: 'New Task Added')
       flash[:notice] = 'Task was successfully created.'
       redirect_to status_path(@status)
     else
@@ -36,6 +37,7 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   def update
     if @task.update(task_params)
+      Log.create(user_id: @current_user.id, timestamp: Time.now, action: 'Task Updated')
       flash[:notice] = 'Task was successfully updated.'
       redirect_to @task
     else
@@ -46,6 +48,7 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   def destroy
     @task.destroy
+    Log.create(user_id: @current_user.id, timestamp: Time.now, action: 'Task Deleted')
     flash[:notice] = 'Task was successfully destroyed.'
     redirect_to tasks_url
   end

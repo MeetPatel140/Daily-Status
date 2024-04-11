@@ -38,6 +38,7 @@ end
     @status.user = current_user
     if @status.save
       AdminMailer.new_status_email(current_user, @status).deliver_now
+      Log.create(user_id: @current_user.id, timestamp: Time.now, action: 'New Status Added')
       flash[:notice] = 'Status was successfully added.'
       redirect_to status_path(@status)
     else
@@ -50,6 +51,7 @@ end
     set_status_attribute
     if current_user_admin?
       if @status.update(status_params)
+        Log.create(user_id: @current_user.id, timestamp: Time.now, action: 'Status Updated')
         flash[:notice] = 'Status was successfully updated.'
         redirect_to statuses_path
       else
@@ -59,6 +61,7 @@ end
       end
     elsif current_user == @status.user
       if @status.update(status_params)
+        Log.create(user_id: @current_user.id, timestamp: Time.now, action: 'Status Updated')
         flash[:notice] = 'Status was successfully updated.'
         redirect_to statuses_path
       else
@@ -75,6 +78,7 @@ end
   # DELETE /statuses/1
   def destroy
     @status.destroy
+    Log.create(user_id: @current_user.id, timestamp: Time.now, action: 'Status Deleted')
     flash[:notice] = 'Status was successfully destroyed.'
     redirect_to statuses_url
   end
@@ -83,6 +87,7 @@ end
     @status = Status.find(params[:id])
 
     if @status.update(status: 'resolved')
+      AdminMailer.mark_resolved_email(current_user, @status).deliver_now
       flash[:notice] = 'Status marked as resolved.'
     else
       flash[:alert] = 'Failed to mark status as resolved.'
@@ -94,6 +99,7 @@ end
     @status = Status.find(params[:id])
 
     if @status.update(status: 'completed')
+      AdminMailer.mark_completed_email(current_user, @status).deliver_now
       flash[:notice] = 'Status marked as resolved.'
     else
       flash[:alert] = 'Failed to mark status as resolved.'
