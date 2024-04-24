@@ -26,8 +26,10 @@ class TimeRecordsController < ApplicationController
 
   def check_out
     check_in_record = current_user.time_records.last
-    if current_user.has_checked_out_today? || check_in_record.nil? || check_in_record.check_out_at.present?
-      redirect_to root_path, alert: 'You have already checked out today or have not checked in yet.'
+    if check_in_record.nil?
+      redirect_to root_path, alert: 'You have not Checked-In yet.'
+    elsif current_user.has_checked_out_today? || check_in_record.check_out_at.present?
+      redirect_to root_path, alert: 'You have already Checked-Out today.'
     else
       check_in_record.update(check_out_at: Time.current)
       AdminMailer.check_out_email_user(current_user).deliver_now
