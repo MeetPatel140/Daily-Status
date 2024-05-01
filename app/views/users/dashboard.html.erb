@@ -675,24 +675,21 @@
             // Clear existing content
             calendarBody.innerHTML = '';
 
+            // Get the starting day of the week for the first day of the month
+            const startDay = new Date(year, month - 1, 0).getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+
             // Start building the table rows
-            let row;
+            let row = document.createElement('tr');
+            calendarBody.appendChild(row);
+
+            // Add empty cells for the days before the first day of the month
+            for (let i = 0; i < startDay; i++) {
+                const emptyCell = document.createElement('td');
+                row.appendChild(emptyCell);
+            }
+
+            // Start from the first day of the month
             for (let day = 1; day <= daysInMonth; day++) {
-                if (day === 1 || new Date(year, month - 1, day).getDay() === 1) {
-                    // Start a new row at the beginning of the month or on Monday
-                    row = document.createElement('tr');
-                    calendarBody.appendChild(row);
-                }
-
-                // Skip adding marks for Sundays
-                if (new Date(year, month - 1, day).getDay() === 0) {
-                    const cell = document.createElement('td');
-                    cell.textContent = day;
-                    cell.classList.add('sunday'); // Add class for Sundays
-                    row.appendChild(cell);
-                    continue; // Skip adding marks for Sundays
-                }
-
                 // Create a table cell for the day
                 const cell = document.createElement('td');
                 cell.textContent = day;
@@ -726,7 +723,7 @@
                         const mark = document.createElement('span');
                         mark.textContent = '❌';
                         mark.classList.add('cross-mark');
-                        mark.style.color = 'rgba(150, 0, 0, 0.3)';  
+                        mark.style.color = 'rgba(150, 0, 0, 0.3)';
                         mark.style.fontSize = '22px';
                         mark.style.fontWeight = 'bold';
                         mark.style.transform = 'translate(-75%, -10%)';
@@ -740,6 +737,12 @@
 
                 // Append the cell to the current row
                 row.appendChild(cell);
+
+                // If it's the last day of the week or the last day of the month, start a new row
+                if ((startDay + day) % 7 === 0 || day === daysInMonth) {
+                    row = document.createElement('tr');
+                    calendarBody.appendChild(row);
+                }
             }
         }
 
@@ -752,46 +755,59 @@
         // Call the function to populate the calendar when the page loads
         populateCalendar();
 
+
         // Function to populate the admin calendar with fetched time records
-        async function populateAdminCalendar() {
-            // Get the current year and month
-            const currentDate = new Date();
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth() + 1;
+async function populateAdminCalendar() {
+    // Get the current year and month
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
 
-            // Get the admin calendar body element
-            const adminCalendarBody = document.getElementById('calendar-body2');
+    // Get the admin calendar body element
+    const adminCalendarBody = document.getElementById('calendar-body2');
 
-            // Get the month and year element
-            const monthYearElement = document.getElementById('month-year');
-            monthYearElement.textContent = `${getMonthName(month)} ${year}`;
+    // Get the month and year element
+    const monthYearElement = document.getElementById('month-year');
+    monthYearElement.textContent = `${getMonthName(month)} ${year}`;
 
-            // Get the number of days in the current month
-            const daysInMonth = new Date(year, month, 0).getDate();
+    // Get the number of days in the current month
+    const daysInMonth = new Date(year, month, 0).getDate();
 
-            // Clear existing content
-            adminCalendarBody.innerHTML = '';
+    // Clear existing content
+    adminCalendarBody.innerHTML = '';
 
-            // Start building the table rows
-            let row;
-            for (let day = 1; day <= daysInMonth; day++) {
-                if (day === 1 || new Date(year, month - 1, day).getDay() === 1) {
-                    // Start a new row at the beginning of the month or on Monday
-                    row = document.createElement('tr');
-                    adminCalendarBody.appendChild(row);
-                }
+    // Get the starting day of the week for the first day of the month
+    const startDay = new Date(year, month - 1, 0).getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
 
-                // Create a table cell for the day
-                const cell = document.createElement('td');
-                cell.textContent = day;
+    // Start building the table rows
+    let row = document.createElement('tr');
+    adminCalendarBody.appendChild(row);
 
-                // Append the cell to the current row
-                row.appendChild(cell);
-            }
+    // Add empty cells for the days before the first day of the month
+    for (let i = 0; i < startDay; i++) {
+        const emptyCell = document.createElement('td');
+        row.appendChild(emptyCell);
+    }
+
+    // Start from the first day of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+        // Create a table cell for the day
+        const cell = document.createElement('td');
+        cell.textContent = day;
+
+        // Append the cell to the current row
+        row.appendChild(cell);
+
+        // If it's the last day of the week or the last day of the month, start a new row
+        if ((startDay + day) % 7 === 0 || day === daysInMonth) {
+            row = document.createElement('tr');
+            adminCalendarBody.appendChild(row);
         }
+    }
+}
 
-        // Call the function to populate the admin calendar when the page loads
-        populateAdminCalendar();
+// Call the function to populate the admin calendar when the page loads
+populateAdminCalendar();
 
 
         function updateCPULoad() {
