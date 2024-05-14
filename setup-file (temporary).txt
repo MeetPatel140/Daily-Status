@@ -1,0 +1,5 @@
+//ngrok port forwarding command:
+ngrok http 3000
+
+//ngrok port forwarding with URL Link command:
+ngrok http --domain=sweet-boa-bursting.ngrok-free.app 3000

@@ -225,7 +225,15 @@
                                             </td>                              
                                             <td>
                                               <% if status.remarks.present? %>
-                                                <%= status.remarks %>
+                                                <% if status.status != "completed" %>
+                                                  <% if status.status == "resolved" %>
+                                                    <p class="text-warning"><%= status.remarks %></p>
+                                                  <% elsif status.status == "issue" %>
+                                                    <p class="text-danger"><%= status.remarks %></p>
+                                                  <% end %>
+                                                <% else %>
+                                                  <p class="text-success"><b>All Resolved</b></p>
+                                                <% end %>
                                               <% else %>
                                                 ----------
                                               <% end %>
@@ -249,14 +257,18 @@
                                                   <% end %>
                                           
                                                   <% if !current_user.admin? %>
-                                                    <%= button_to edit_status_path(status), method: :get, class: 'btn btn-warning mr-2', remote: true do %>
-                                                        <i class="fas fa-edit"></i> Edit
+                                                    <% if status.status != "completed" %>
+                                                      <%= button_to edit_status_path(status), method: :get, class: 'btn btn-warning mr-2', remote: true do %>
+                                                          <i class="fas fa-edit"></i> Edit
+                                                      <% end %>
                                                     <% end %>
                                                   <% end %>
 
                                                   <% if current_user.admin? %>
-                                                    <%= button_to status_path(status), method: :delete, class: 'btn btn-danger mr-2', data: { turbo_confirm: 'Are you sure?' }, remote: true do %>
-                                                        <i class="fas fa-trash"></i> Delete
+                                                    <% if status.status != "completed" %>
+                                                      <%= button_to status_path(status), method: :delete, class: 'btn btn-danger mr-2', data: { turbo_confirm: 'Are you sure?' }, remote: true do %>
+                                                          <i class="fas fa-trash"></i> Delete
+                                                      <% end %>
                                                     <% end %>
                                                   <% end %>
 

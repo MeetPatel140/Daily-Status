@@ -156,7 +156,7 @@
                 <h1 class="h3 mb-0 text-gray-800">
                   <% if current_user.admin? %>
                     <%= link_to statuses_path, class: "text-dark" do %>
-                      <i class="fas fa-user mr-1"></i> Employee's Statuses
+                      <i class="fas fa-user mr-1"></i> <%= @status.user.name %>'s Statuses
                     <% end %>
                     <% else %>
                     <%= link_to statuses_path, class: "text-dark" do %>
@@ -193,31 +193,43 @@
                         </span>
                     
                         <% if !current_user.admin? && @status.status == "issue" %>
-                          <%= button_to mark_resolved_status_path(@status), method: :get, data: { turbo_confirm: 'Are you sure you want to Mark this Status as Resolved?' }, class: 'btn btn-success float-right mb-3', style: 'margin-left: auto;', remote: true do %>
+                          <%= button_to mark_resolved_status_path(@status), method: :get, data: { turbo_confirm: 'Are you sure you want to Mark this Status as Resolved?' }, class: 'btn btn-success float-right mb-0', style: 'margin-left: auto;', remote: true do %>
                             <i class="fas fa-check"></i> Mark as Resolved
                           <% end %>
                         <% end %>
                       </h4>
                     
-                      <h4>Remarks:
+                      <h4>
+                       <div class="d-flex justify-content-start align-items-center">
+                        <span>Remarks: </span>
                         <% if @status.remarks.present? %>
-                          <%= @status.remarks %>
+                            <% if @status.status != "completed" %>
+                                <% if @status.status == "issue" %>
+                                    <span class="text-danger mb-0 mr-2">&nbsp;<%= @status.remarks %></span>
+                                <% elsif @status.status == "resolved" %>
+                                    <span class="text-warning mb-0 mr-2">&nbsp;<%= @status.remarks %></span>
+                                <% end %>
+                            <% else %>
+                                <p class="text-success mb-0 mr-2"><b>&nbsp;All Resolved</b></p>
+                            <% end %>
                         <% else %>
-                          <span class="text-info"><b>No Remarks</b></span>
+                          <span class="text-info mb-0 mr-2"><b>&nbsp;No Remarks</b></span>
                         <% end %>
 
                         <% if current_user.admin? %>
-                          <% if @status.status = "pending" || @status.status = "resolved" %>
-                            <% if @status.remarks.present? %>
-                                <%= link_to edit_status_path(@status), class: "btn btn-info float-right mb-3", title: "Edit Status" do %>
-                                    <i class="fas fa-edit"></i> Edit Remark
-                                <% end %>
-                            <% else %>
-                                <%= link_to edit_status_path(@status), class: "btn btn-info float-right mb-3", title: "New Status" do %>
-                                    <i class="fas fa-plus"></i> Add Remark
+                            <% if @status.status != "completed" %>
+                                <% if @status.status = "pending" || @status.status = "resolved" %>
+                                    <% if @status.remarks.present? %>
+                                        <%= link_to edit_status_path(@status), class: "btn btn-info float-right mb-0", title: "Edit Status" do %>
+                                            <i class="fas fa-edit"></i> Edit Remark
+                                        <% end %>
+                                    <% else %>
+                                        <%= link_to edit_status_path(@status), class: "btn btn-info float-right mb-0", title: "New Status" do %>
+                                            <i class="fas fa-plus"></i> Add Remark
+                                        <% end %>
+                                    <% end %>
                                 <% end %>
                             <% end %>
-                        <% end %>
                         <% end %>
 
                       </h4>
@@ -235,11 +247,13 @@
                     
                     <div class="card-body">
                       <% if !current_user.admin? %>
-                        <!-- New Status Link (Right Side) -->
-                        <%= link_to new_task_path(status_id: @status.id), class: "btn btn-info float-right mb-3", title: "New Status" do %>
-                          <i class="fas fa-plus"></i> New Task
+                        <!-- New Task Link (Right Side) -->
+                        <% if @status.status != "completed" %>
+                            <%= link_to new_task_path(status_id: @status.id), class: "btn btn-info float-right mb-3", title: "New Task" do %>
+                            <i class="fas fa-plus"></i> New Task
+                            <% end %>
                         <% end %>
-                      <% end %>
+                        <% end %>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
@@ -249,7 +263,9 @@
                                         <th style="width: 5%;">Start Time</th>
                                         <th style="width: 5%;">End Time</th>
                                         <th style="width: 5%;">Screenshot</th>
-                                        <th style="width: 5%;">Action</th>
+                                        <% if @status.status != "completed" %>
+                                            <th style="width: 5%;">Action</th>
+                                        <% end %>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -259,7 +275,9 @@
                                         <th style="width: 5%;">Start Time</th>
                                         <th style="width: 5%;">End Time</th>
                                         <th style="width: 5%;">Screenshot</th>
-                                        <th style="width: 5%;">Action</th>
+                                        <% if @status.status != "completed" %>
+                                            <th style="width: 5%;">Action</th>
+                                        <% end %>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -308,18 +326,20 @@
                                             </div>
                                         </div>
 
-                                        <td>
-                                            <div class="btn-group" role="group" aria-label="Task Actions">
-                                            <% if !current_user.admin? %>
-                                                <%= link_to edit_task_path(task.id), class: "btn btn-warning btn-sm mr-2", title: "Edit" do %>
-                                                <i class="fas fa-edit"></i> Edit
+                                        <% if @status.status != "completed" %>
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="Task Actions">
+                                                <% if !current_user.admin? %>
+                                                    <%= link_to edit_task_path(task.id), class: "btn btn-warning btn-sm mr-2", title: "Edit" do %>
+                                                    <i class="fas fa-edit"></i> Edit
+                                                    <% end %>
                                                 <% end %>
-                                            <% end %>
-                                            <%= link_to task_path(task), data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to Delete this Task ?' }, class: "btn btn-danger btn-sm", title: "Delete" do %>
-                                                <i class="fas fa-trash"></i> Delete
-                                            <% end %>
-                                            </div>
-                                        </td>                     
+                                                <%= link_to task_path(task), data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to Delete this Task ?' }, class: "btn btn-danger btn-sm", title: "Delete" do %>
+                                                    <i class="fas fa-trash"></i> Delete
+                                                <% end %>
+                                                </div>
+                                            </td>
+                                        <% end %>                     
                                         </tr>
                                     <% end %>
                                     </tbody>

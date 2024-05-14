@@ -104,9 +104,9 @@ end
 
     if @status.update(status: 'completed')
       AdminMailer.mark_as_completed_email_user(current_user, @status).deliver_now
-      flash[:notice] = 'Status marked as resolved.'
+      flash[:notice] = 'Status marked as completed.'
     else
-      flash[:alert] = 'Failed to mark status as resolved.'
+      flash[:alert] = 'Failed to mark status as completed.'
     end
     redirect_to statuses_path
   end

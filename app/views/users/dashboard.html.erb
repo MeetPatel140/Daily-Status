@@ -594,52 +594,110 @@
         fetchWeeklyDurations();
 
         // Function to fetch and display weekly employee count
-        async function fetchAndDisplayWeeklyEmployeeCount() {
-            // Fetch weekly employee count from the server
-            fetch('/weekly_employee_count')
-                .then(response => response.json())
-                .then(data => {
-                    const weeklyCounts = data.weeklyCounts;
+async function fetchAndDisplayWeeklyEmployeeCount() {
+    // Fetch weekly employee count from the server
+    fetch('/weekly_employee_count')
+        .then(response => response.json())
+        .then(data => {
+            const weeklyCounts = data.weeklyCounts;
 
-                    // Extract dates and counts from the response
-                    const dates = weeklyCounts.map(entry => entry.date);
-                    const counts = weeklyCounts.map(entry => entry.count);
+            // Extract dates and counts from the response
+            const dates = weeklyCounts.map(entry => entry.date);
+            const counts = weeklyCounts.map(entry => entry.count);
 
-                    // Display weekly employee count using Chart.js
-                    const ctx = document.getElementById('weeklyChart2').getContext('2d');
-                    const weeklyChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: dates,
-                            datasets: [{
-                                label: 'Employees Count',
-                                data: counts,
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    display: false // Hide legend
+            // Calculate maximum count
+            const maxCount = Math.max(...counts);
+
+            // Calculate attendance ratio for each count
+            const ratios = counts.map(count => count / maxCount);
+
+            // Define color thresholds
+            const colorScale = ratios.map(ratio => {
+                if (ratio >= 0.8) {
+                    return 'green'; // High attendance
+                } else if (ratio >= 0.6) {
+                    return 'lime'; // Moderate attendance
+                } else if (ratio >= 0.4) {
+                    return 'yellow'; // Average attendance
+                } else if (ratio >= 0.2) {
+                    return 'orange'; // Low attendance
+                } else {
+                    return 'red'; // Very low attendance
+                }
+            });
+
+            // Display weekly employee count using Chart.js
+            const ctx = document.getElementById('weeklyChart2').getContext('2d');
+            const weeklyChart = new Chart(ctx, {
+                type: 'bar', // Change chart type to bar
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Employees Count',
+                        data: counts,
+                        backgroundColor: colorScale.map(color => `rgba(${getColor(color)})`), // Set color based on ratio
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            // Customize y-axis ticks
+                            ticks: {
+                                stepSize: 1, // Display labels in whole numbers
+                                callback: function (value) { // Customize label format
+                                    return Math.round(value);
                                 }
                             }
                         }
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching weekly employee count:', error);
-                });
-        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hide legend
+                        },
+                        tooltip: {
+                            // Display tooltip with count details
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    return `${label}: ${value}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching weekly employee count:', error);
+        });
+}
 
-        // Call the function to fetch and display weekly employee count when the page loads
-        fetchAndDisplayWeeklyEmployeeCount();
+// Call the function to fetch and display weekly employee count when the page loads
+fetchAndDisplayWeeklyEmployeeCount();
+
+// Function to get color based on predefined color scale
+function getColor(color) {
+    switch (color) {
+        case 'green':
+            return 'rgba(0, 128, 0, 0.8)'; // Dark green
+        case 'blue':
+            return 'rgba(0, 0, 139, 0.8)'; // Dark blue
+        case 'orange':
+            return 'rgba(255, 140, 0, 0.8)'; // Dark orange
+        case 'red':
+            return 'rgba(139, 0, 0, 0.8)'; // Dark red
+        case 'darkred':
+            return 'rgba(139, 0, 0, 0.5)'; // Dark red
+        default:
+            return 'rgba(0, 0, 0, 0.8)'; // Black (default color)
+    }
+}
+
+
 
 
         // Function to fetch time records for the current user for the specified year and month
@@ -676,14 +734,20 @@
             calendarBody.innerHTML = '';
 
             // Get the starting day of the week for the first day of the month
-            const startDay = new Date(year, month - 1, 0).getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+            const firstDayOfMonth = new Date(year, month - 1, 1);
+            let startDay = firstDayOfMonth.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+
+            // Adjust startDay to start from Monday (if it's Sunday, set it to 7 to make it Monday)
+            if (startDay === 0) {
+                startDay = 7;
+            }
 
             // Start building the table rows
             let row = document.createElement('tr');
             calendarBody.appendChild(row);
 
             // Add empty cells for the days before the first day of the month
-            for (let i = 0; i < startDay; i++) {
+            for (let i = 1; i < startDay; i++) {
                 const emptyCell = document.createElement('td');
                 row.appendChild(emptyCell);
             }
@@ -705,7 +769,7 @@
                 const isFutureDate = currentDateObj > currentDate;
 
                 // Add appropriate class based on time record existence and future date
-                if (!isFutureDate) {
+                if (!isFutureDate && currentDateObj.getDay() !== 0) { // Skip marking crosses on Sundays
                     cell.classList.add(recordExists ? 'present' : 'missing');
 
                     // Add check/cross mark only for past and present dates
@@ -731,7 +795,7 @@
                         cell.appendChild(mark);
                     }
                 } else {
-                    // Add class for future dates
+                    // Add class for future dates or Sundays
                     cell.classList.add('future');
                 }
 
@@ -739,12 +803,13 @@
                 row.appendChild(cell);
 
                 // If it's the last day of the week or the last day of the month, start a new row
-                if ((startDay + day) % 7 === 0 || day === daysInMonth) {
+                if ((startDay + day - 1) % 7 === 0 || day === daysInMonth) {
                     row = document.createElement('tr');
                     calendarBody.appendChild(row);
                 }
             }
         }
+
 
         // Function to get the name of the month
         function getMonthName(month) {
@@ -756,58 +821,59 @@
         populateCalendar();
 
 
+
         // Function to populate the admin calendar with fetched time records
-async function populateAdminCalendar() {
-    // Get the current year and month
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1;
+        async function populateAdminCalendar() {
+            // Get the current year and month
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
 
-    // Get the admin calendar body element
-    const adminCalendarBody = document.getElementById('calendar-body2');
+            // Get the admin calendar body element
+            const adminCalendarBody = document.getElementById('calendar-body2');
 
-    // Get the month and year element
-    const monthYearElement = document.getElementById('month-year');
-    monthYearElement.textContent = `${getMonthName(month)} ${year}`;
+            // Get the month and year element
+            const monthYearElement = document.getElementById('month-year');
+            monthYearElement.textContent = `${getMonthName(month)} ${year}`;
 
-    // Get the number of days in the current month
-    const daysInMonth = new Date(year, month, 0).getDate();
+            // Get the number of days in the current month
+            const daysInMonth = new Date(year, month, 0).getDate();
 
-    // Clear existing content
-    adminCalendarBody.innerHTML = '';
+            // Clear existing content
+            adminCalendarBody.innerHTML = '';
 
-    // Get the starting day of the week for the first day of the month
-    const startDay = new Date(year, month - 1, 0).getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+            // Get the starting day of the week for the first day of the month
+            const startDay = new Date(year, month - 1, 0).getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
 
-    // Start building the table rows
-    let row = document.createElement('tr');
-    adminCalendarBody.appendChild(row);
-
-    // Add empty cells for the days before the first day of the month
-    for (let i = 0; i < startDay; i++) {
-        const emptyCell = document.createElement('td');
-        row.appendChild(emptyCell);
-    }
-
-    // Start from the first day of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-        // Create a table cell for the day
-        const cell = document.createElement('td');
-        cell.textContent = day;
-
-        // Append the cell to the current row
-        row.appendChild(cell);
-
-        // If it's the last day of the week or the last day of the month, start a new row
-        if ((startDay + day) % 7 === 0 || day === daysInMonth) {
-            row = document.createElement('tr');
+            // Start building the table rows
+            let row = document.createElement('tr');
             adminCalendarBody.appendChild(row);
-        }
-    }
-}
 
-// Call the function to populate the admin calendar when the page loads
-populateAdminCalendar();
+            // Add empty cells for the days before the first day of the month
+            for (let i = 0; i < startDay; i++) {
+                const emptyCell = document.createElement('td');
+                row.appendChild(emptyCell);
+            }
+
+            // Start from the first day of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                // Create a table cell for the day
+                const cell = document.createElement('td');
+                cell.textContent = day;
+
+                // Append the cell to the current row
+                row.appendChild(cell);
+
+                // If it's the last day of the week or the last day of the month, start a new row
+                if ((startDay + day) % 7 === 0 || day === daysInMonth) {
+                    row = document.createElement('tr');
+                    adminCalendarBody.appendChild(row);
+                }
+            }
+        }
+
+        // Call the function to populate the admin calendar when the page loads
+        populateAdminCalendar();
 
 
         function updateCPULoad() {
